@@ -1,0 +1,18 @@
+{
+  "name": "Dhuni",
+  "short_name": "Dhuni",
+  "description": "A vintage Indian radio experience by Samooh",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#2C1810",
+  "theme_color": "#D4A843",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='80' fill='%232C1810'/><text x='256' y='360' text-anchor='middle' font-size='300' fill='%23D4A843'>&#9835;</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
