@@ -249,7 +249,7 @@
 .world__fire-anchor {
   z-index: 8;
   left: 50%;
-  top: 60%;
+  top: 59%;
   width: 260px;
   height: 250px;
   transform: translate(-50%, -50%);
@@ -935,7 +935,7 @@
   position: absolute;
   z-index: 20;
   left: 50%;
-  bottom: clamp(2.15rem, 5.8vh, 3.2rem);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(2.5rem, 6.6vh, 3.7rem));
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
@@ -951,7 +951,7 @@
   position: absolute;
   z-index: 20;
   left: 50%;
-  bottom: clamp(0.25rem, 1.2vh, 0.65rem);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(0.22rem, 0.9vh, 0.5rem));
   transform: translateX(-50%);
   font-size: 0.54rem;
   letter-spacing: 0.11em;
@@ -1339,11 +1339,11 @@
   }
 
   .control-dock {
-    bottom: 1.9rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 2.25rem);
   }
 
   .world-credit {
-    bottom: 0.24rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.24rem);
   }
 }
 
@@ -1360,7 +1360,7 @@
   }
 
   .world__fire-anchor {
-    top: 62%;
+    top: 61%;
     transform: translate(-50%, -50%) scale(0.78);
   }
 
@@ -1373,7 +1373,7 @@
   }
 
   .control-dock {
-    bottom: 1.7rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 2.05rem);
     gap: 0.24rem;
     padding: 0.24rem 0.34rem;
   }
@@ -1383,7 +1383,7 @@
   }
 
   .world-credit {
-    bottom: 0.2rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.2rem);
     font-size: 0.5rem;
     letter-spacing: 0.09em;
   }
