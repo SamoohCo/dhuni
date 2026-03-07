@@ -70,7 +70,7 @@ function App() {
       />
 
       <footer className="world-credit">
-        Handcrafted with love by{' '}
+        Handcrafted with love at{' '}
         <a href="https://samooh.com" target="_blank" rel="noreferrer noopener">
           Samooh
         </a>
