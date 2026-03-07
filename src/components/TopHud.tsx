@@ -3,23 +3,19 @@ import type { Station } from '../data/stations';
 interface TopHudProps {
   station: Station;
   statusText: string;
-  isPowered: boolean;
 }
 
-export function TopHud({ station, statusText, isPowered }: TopHudProps) {
+export function TopHud({ station, statusText }: TopHudProps) {
   return (
     <header className="top-hud" aria-live="polite">
       <p className="top-hud__brand">Dhuni</p>
-      <div className="top-hud__station">
-        <h1>{station.name}</h1>
-        <p>{station.tagline}</p>
-      </div>
-      <p className="top-hud__meta">
-        <span>{station.season}</span>
-        <span>{station.mood}</span>
-        <span>{station.tradition}</span>
+      <p className="top-hud__line">
+        <span className="top-hud__name">{station.name}</span>
+        <span className="top-hud__dot">|</span>
+        <span className="top-hud__tag">{station.mood}</span>
       </p>
-      <p className={`top-hud__state ${isPowered ? 'is-active' : ''}`}>{statusText}</p>
+      <p className="top-hud__tagline">{station.tagline}</p>
+      <p className="top-hud__state">{statusText}</p>
     </header>
   );
 }

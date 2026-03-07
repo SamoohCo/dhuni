@@ -1,31 +1,31 @@
 # Dhuni
 
-Dhuni is a full-screen ambient listening world for Indian sound.
+Dhuni is a full-screen sacred listening landscape for Indian sound.
 
-The entire browser window is the interface:
-- a constant sacred pixel dhuni (fire) at center
-- 4 tiny pixel listener-characters (one per station/season)
-- atmospheric seasonal world transitions on station switch
-- ultra-minimal top HUD and bottom control dock
+The browser window itself is the world:
+- layered atmosphere and horizon depth
+- one constant central dhuni fire (always burning)
+- four pixel listener-characters gathered around the fire
+- seasonal world-state shifts per station
+- minimal floating overlays for metadata and controls
 
-No dashboard layout. No framed card scene. No visible YouTube player UI.
+No framed stage. No dashboard shell. No visible YouTube UI.
 
-## Core architecture (preserved)
+## What stays stable
 
-This refactor keeps the existing deployment and playback model:
+This refactor preserves the proven architecture:
 - static Vite build for GitHub Pages
 - YouTube playlist-backed stations
-- hidden YouTube Iframe API player wrapper
-- local config-driven station mapping
-- localStorage for station/volume/mute
-- Media Session integration where available
+- hidden iframe player abstraction
+- local station config file
+- keyboard/media controls and local storage preferences
 
 ## Stack
 
 - Vite
 - React + TypeScript
-- Plain CSS (custom scene + HUD system)
-- YouTube Iframe Player API via `src/lib/youtubePlayer.ts`
+- Plain CSS (layered world composition)
+- YouTube Iframe Player API wrapper (`src/lib/youtubePlayer.ts`)
 
 ## Quick start
 
@@ -41,39 +41,33 @@ npm run build
 npm run preview
 ```
 
-## Project structure
+## World architecture
 
-- `src/data/stations.ts`: station + character + season + palette config
-- `src/hooks/useRadioState.ts`: playback/station state orchestration
-- `src/hooks/useKeyboardShortcuts.ts`: keyboard handling
-- `src/components/DhuniScene.tsx`: full-screen world renderer
-- `src/components/FireSprite.tsx`: pixel fire sprite
-- `src/components/CharacterSprite.tsx`: pixel character sprites
+- `src/components/DhuniScene.tsx`: world composition and character interaction
+- `src/components/LandscapeLayers.tsx`: sky/horizon/terrain/foreground depth layers
+- `src/components/FireSprite.tsx`: hybrid sacred fire (flame layers, coals, embers, glow)
+- `src/components/CharacterSprite.tsx`: pixel listener sprites
 - `src/components/TopHud.tsx`: minimal top metadata overlay
-- `src/components/ControlDock.tsx`: minimal bottom control dock
-- `src/lib/youtubePlayer.ts`: hidden YouTube player abstraction
+- `src/components/ControlDock.tsx`: minimal floating control dock
 
-## Station/character config
+## Station + character config
 
 Edit `src/data/stations.ts`.
 
-Each station maps directly to one character and one world state.
+Each station maps to:
+- one character
+- one season state
+- one playlist
+- one world palette/camera profile
 
-Fields include:
-- `id`
-- `name`
-- `tagline`
-- `playlistId`
-- `season`
-- `mood`
-- `tradition`
-- `description`
-- `spriteType`
-- `environmentType`
+Important fields:
+- `id`, `name`, `tagline`, `playlistId`
+- `season`, `mood`, `tradition`, `description`
+- `spriteType`, `environmentType`
 - `cameraShiftX`, `cameraShiftY`
-- `palette` (scene/HUD color system)
+- `palette` (`sky`, `horizon`, `terrain`, `fog`, `ember`, `hud` tones)
 
-Current 4 seasonal worlds:
+Current seasonal worlds:
 - Winter
 - Summer
 - Monsoon
@@ -91,50 +85,46 @@ Current 4 seasonal worlds:
 - `End`: last station
 - `Enter`: activate focused character
 
-Keyboard updates station selection, scene state, and playback state together.
+Selection, scene state, and playback stay synchronized.
 
 ## Mobile behavior
 
 - full-screen world remains intact
-- characters remain tappable
-- top HUD is reduced for readability
-- dock condenses and keeps core controls accessible
-- no hover-only critical actions
+- all 4 characters remain visible and tappable
+- top HUD condenses
+- control dock stays minimal and reachable
+- interaction does not depend on hover
 
-## Media Session + browser limitations
+## Media Session + web limits
 
 Dhuni uses Media Session API where supported for:
-- play/pause actions
-- previous/next actions
-- station metadata
+- play/pause
+- previous/next station
+- metadata updates
 
 Web limitation:
-- browsers do **not** reliably expose true OS/hardware volume key interception to web apps.
-- in-app volume is controlled via dock slider and keyboard arrows.
+- browsers do not reliably expose OS hardware volume key interception to web apps.
+- use in-app volume slider and ArrowUp/ArrowDown.
 
 ## Autoplay behavior
 
-Some browsers block autoplay until user interaction.
+Browsers may block autoplay until a direct user interaction occurs.
 
-Dhuni handles this by:
-- attempting playback on explicit interaction
-- showing a graceful error/retry status if blocked
+Dhuni handles this with:
+- interaction-led playback attempts
+- graceful retry/error state when blocked
 
 ## GitHub Pages deployment
 
-The app is static-only and GitHub Pages compatible.
+This remains static-only and GitHub Pages compatible.
 
-`vite.config.ts` uses:
+`vite.config.ts`:
 
 ```ts
 const base = process.env.VITE_BASE_PATH ?? '/';
 ```
 
-For custom domains (for example `dhuni.net`), use root base path (`/`).
-For project-subpath deploys, set:
-
-```bash
-VITE_BASE_PATH=/repo/ npm run build
-```
+- Custom domain (e.g. `dhuni.net`): use `/`
+- Project subpath deploy: `VITE_BASE_PATH=/repo/ npm run build`
 
 Current workflow deploys from `main` with `VITE_BASE_PATH=/`.

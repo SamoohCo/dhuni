@@ -2,6 +2,7 @@ import { useEffect, useRef, type CSSProperties } from 'react';
 import type { Station } from '../data/stations';
 import { CharacterSprite } from './CharacterSprite';
 import { FireSprite } from './FireSprite';
+import { LandscapeLayers } from './LandscapeLayers';
 
 interface DhuniSceneProps {
   stations: Station[];
@@ -16,10 +17,10 @@ interface DhuniSceneProps {
 }
 
 const CHARACTER_POSITIONS = [
-  { x: 25, y: 56 },
-  { x: 41, y: 47 },
-  { x: 59, y: 47 },
-  { x: 75, y: 56 },
+  { x: 27, y: 67 },
+  { x: 40, y: 60 },
+  { x: 60, y: 60 },
+  { x: 73, y: 67 },
 ];
 
 export function DhuniScene({
@@ -47,9 +48,12 @@ export function DhuniScene({
   const worldStyle = {
     '--sky-top': currentStation.palette.skyTop,
     '--sky-bottom': currentStation.palette.skyBottom,
+    '--horizon-far': currentStation.palette.horizonFar,
+    '--horizon-mid': currentStation.palette.horizonMid,
+    '--terrain': currentStation.palette.terrain,
     '--fog': currentStation.palette.fog,
-    '--ground': currentStation.palette.ground,
     '--ember': currentStation.palette.ember,
+    '--firelight': currentStation.palette.firelight,
     '--accent': currentStation.palette.accent,
     '--camera-x': `${currentStation.cameraShiftX}%`,
     '--camera-y': `${currentStation.cameraShiftY}%`,
@@ -60,56 +64,51 @@ export function DhuniScene({
     <section
       className={`world world--${currentStation.season} env--${currentStation.environmentType} ${isPowered ? 'is-powered' : ''} ${isPlaying ? 'is-playing' : ''} ${isStationSwitching ? 'is-switching' : ''}`}
       style={worldStyle}
-      aria-label="Dhuni world"
+      aria-label="Dhuni landscape world"
     >
-      <div className="world__sky" aria-hidden="true" />
-      <div className="world__atmosphere" aria-hidden="true" />
-      <div className="world__weather" aria-hidden="true">
-        <span className="weather-particle p1" />
-        <span className="weather-particle p2" />
-        <span className="weather-particle p3" />
-        <span className="weather-particle p4" />
-      </div>
+      <div className="world__camera-plane">
+        <LandscapeLayers />
 
-      <div className="world__ground" aria-hidden="true" />
+        <div className="world__firelight" aria-hidden="true" />
 
-      <div className="world__fire-anchor">
-        <FireSprite />
-      </div>
+        <div className="world__fire-anchor">
+          <FireSprite />
+        </div>
 
-      <ol className="world-characters" aria-label="Characters around the dhuni">
-        {stations.map((station, index) => {
-          const position = CHARACTER_POSITIONS[index] ?? CHARACTER_POSITIONS[index % CHARACTER_POSITIONS.length];
-          const isActive = index === stationIndex;
+        <ol className="world-characters" aria-label="Characters around the dhuni">
+          {stations.map((station, index) => {
+            const position = CHARACTER_POSITIONS[index] ?? CHARACTER_POSITIONS[index % CHARACTER_POSITIONS.length];
+            const isActive = index === stationIndex;
 
-          return (
-            <li
-              key={station.id}
-              className={`world-characters__item ${isActive ? 'is-active' : ''}`}
-              style={{ left: `${position.x}%`, top: `${position.y}%` }}
-            >
-              <button
-                ref={(element) => {
-                  buttonRefs.current[index] = element;
-                }}
-                type="button"
-                className={`world-character ${isActive ? 'is-active' : ''}`}
-                onClick={() => onActivateStation(index)}
-                onFocus={() => onSelectStation(index)}
-                aria-label={`${station.name}. ${station.tagline}`}
-                aria-pressed={isActive}
+            return (
+              <li
+                key={station.id}
+                className={`world-characters__item ${isActive ? 'is-active' : ''}`}
+                style={{ left: `${position.x}%`, top: `${position.y}%` }}
               >
-                <CharacterSprite
-                  spriteType={station.spriteType}
-                  accent={station.palette.accent}
-                  isActive={isActive}
-                />
-              </button>
-              <span className="world-character__caption">{station.name}</span>
-            </li>
-          );
-        })}
-      </ol>
+                <button
+                  ref={(element) => {
+                    buttonRefs.current[index] = element;
+                  }}
+                  type="button"
+                  className={`world-character ${isActive ? 'is-active' : ''}`}
+                  onClick={() => onActivateStation(index)}
+                  onFocus={() => onSelectStation(index)}
+                  aria-label={`${station.name}. ${station.tagline}`}
+                  aria-pressed={isActive}
+                >
+                  <CharacterSprite
+                    spriteType={station.spriteType}
+                    accent={station.palette.accent}
+                    isActive={isActive}
+                  />
+                </button>
+                <span className="world-character__caption">{station.name}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </section>
   );
 }

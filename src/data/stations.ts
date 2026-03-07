@@ -9,9 +9,12 @@ export type CharacterType =
 export interface StationPalette {
   skyTop: string;
   skyBottom: string;
+  horizonFar: string;
+  horizonMid: string;
+  terrain: string;
   fog: string;
-  ground: string;
   ember: string;
+  firelight: string;
   accent: string;
   hudGlass: string;
 }
@@ -46,16 +49,19 @@ export const stations: Station[] = [
     description: 'A shawled listener in still air before sunrise.',
     spriteType: 'winter-listener',
     environmentType: 'still-air',
-    cameraShiftX: -1.5,
-    cameraShiftY: -0.8,
+    cameraShiftX: -1.4,
+    cameraShiftY: -0.7,
     palette: {
-      skyTop: '#111b31',
-      skyBottom: '#202e49',
-      fog: 'rgba(181, 201, 227, 0.22)',
-      ground: '#2b2731',
-      ember: '#f6b571',
-      accent: '#d5c7a6',
-      hudGlass: 'rgba(19, 29, 46, 0.46)',
+      skyTop: '#0f1a2f',
+      skyBottom: '#1f3150',
+      horizonFar: '#2d3f63',
+      horizonMid: '#25334d',
+      terrain: '#2a2934',
+      fog: 'rgba(172, 197, 226, 0.23)',
+      ember: '#f4b06d',
+      firelight: 'rgba(240, 159, 82, 0.34)',
+      accent: '#d6c7a7',
+      hudGlass: 'rgba(16, 28, 44, 0.36)',
     },
   },
   {
@@ -70,16 +76,19 @@ export const stations: Station[] = [
     description: 'A precise listener holding rhythm in dry warm light.',
     spriteType: 'summer-vidushi',
     environmentType: 'heat-haze',
-    cameraShiftX: 1.2,
-    cameraShiftY: -0.6,
+    cameraShiftX: 1.1,
+    cameraShiftY: -0.5,
     palette: {
-      skyTop: '#1a2034',
-      skyBottom: '#3b2f2d',
-      fog: 'rgba(244, 166, 94, 0.18)',
-      ground: '#44312f',
-      ember: '#ffb26b',
-      accent: '#f0b67f',
-      hudGlass: 'rgba(39, 26, 22, 0.42)',
+      skyTop: '#1c2338',
+      skyBottom: '#463338',
+      horizonFar: '#5a3d3d',
+      horizonMid: '#4a3334',
+      terrain: '#4b3331',
+      fog: 'rgba(239, 166, 96, 0.2)',
+      ember: '#ffb878',
+      firelight: 'rgba(255, 171, 95, 0.39)',
+      accent: '#efb981',
+      hudGlass: 'rgba(39, 28, 25, 0.34)',
     },
   },
   {
@@ -97,13 +106,16 @@ export const stations: Station[] = [
     cameraShiftX: -0.8,
     cameraShiftY: -0.2,
     palette: {
-      skyTop: '#121f2f',
-      skyBottom: '#233b4b',
-      fog: 'rgba(136, 188, 212, 0.24)',
-      ground: '#25343e',
-      ember: '#f0a662',
-      accent: '#99c7d9',
-      hudGlass: 'rgba(16, 39, 52, 0.42)',
+      skyTop: '#122031',
+      skyBottom: '#224356',
+      horizonFar: '#204052',
+      horizonMid: '#203745',
+      terrain: '#243740',
+      fog: 'rgba(137, 191, 212, 0.25)',
+      ember: '#eda564',
+      firelight: 'rgba(237, 149, 85, 0.31)',
+      accent: '#99c9da',
+      hudGlass: 'rgba(16, 39, 52, 0.35)',
     },
   },
   {
@@ -121,13 +133,16 @@ export const stations: Station[] = [
     cameraShiftX: 1.4,
     cameraShiftY: -0.4,
     palette: {
-      skyTop: '#181f30',
-      skyBottom: '#2f3046',
-      fog: 'rgba(197, 185, 160, 0.2)',
-      ground: '#302a32',
-      ember: '#f3ab67',
-      accent: '#d4be98',
-      hudGlass: 'rgba(31, 28, 38, 0.42)',
+      skyTop: '#181f31',
+      skyBottom: '#35344d',
+      horizonFar: '#403852',
+      horizonMid: '#383149',
+      terrain: '#322c38',
+      fog: 'rgba(196, 182, 159, 0.22)',
+      ember: '#f1a967',
+      firelight: 'rgba(240, 155, 87, 0.32)',
+      accent: '#d4be9a',
+      hudGlass: 'rgba(28, 27, 38, 0.34)',
     },
   },
 ];

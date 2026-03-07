@@ -56,7 +56,7 @@ function App() {
         onActivateStation={radio.activateStation}
       />
 
-      <TopHud station={radio.currentStation} statusText={radio.statusText} isPowered={radio.isPowered} />
+      <TopHud station={radio.currentStation} statusText={radio.statusText} />
 
       <ControlDock
         isPowered={radio.isPowered}

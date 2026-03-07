@@ -31,7 +31,7 @@ function getStatusText(params: {
   }
 
   if (params.isMuted) {
-    return `Muted · ${params.station.name}`;
+    return `Muted - ${params.station.name}`;
   }
 
   return 'Listening together';

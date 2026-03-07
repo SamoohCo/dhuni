@@ -2,181 +2,515 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  transition: filter 420ms ease;
+  isolation: isolate;
+  transition: filter 640ms ease;
 }
 
-.world__sky,
-.world__atmosphere,
-.world__weather,
-.world__ground {
-  position: absolute;
-  inset: 0;
-  transition: transform 850ms ease, opacity 700ms ease, background 900ms ease;
-}
-
-.world__sky {
-  background:
-    radial-gradient(1200px 620px at 50% 12%, rgba(250, 173, 99, 0.1), transparent 60%),
-    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
-  transform: translate(var(--camera-x), var(--camera-y));
-}
-
-.world__atmosphere {
-  background:
-    radial-gradient(950px 560px at 50% 55%, var(--fog), transparent 66%),
-    radial-gradient(700px 320px at 84% 15%, rgba(255, 255, 255, 0.06), transparent 66%);
-  mix-blend-mode: screen;
-  opacity: calc(0.45 + var(--fire-energy) * 0.26);
-}
-
-.world__weather {
-  opacity: 0.65;
-}
-
-.weather-particle {
-  position: absolute;
-  border-radius: 999px;
-  background: rgba(240, 245, 255, 0.35);
-}
-
-.weather-particle.p1 {
-  left: 15%;
-  top: 20%;
-}
-
-.weather-particle.p2 {
-  left: 38%;
-  top: 14%;
-}
-
-.weather-particle.p3 {
-  left: 67%;
-  top: 18%;
-}
-
-.weather-particle.p4 {
-  left: 84%;
-  top: 27%;
-}
-
-.world__ground {
-  inset: auto 0 0;
-  height: 43%;
-  background:
-    radial-gradient(120% 140% at 50% 20%, rgba(87, 67, 53, 0.45), transparent 62%),
-    linear-gradient(180deg, color-mix(in srgb, var(--ground) 68%, #2b2431 32%) 0%, var(--ground) 100%);
-}
-
-.world__ground::before {
+.world::before,
+.world::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.018) 0,
-    rgba(255, 255, 255, 0.018) 2px,
-    transparent 2px,
-    transparent 9px
-  );
+  pointer-events: none;
 }
 
-.world__fire-anchor {
+.world::before {
+  background: radial-gradient(circle at 50% 58%, rgba(244, 169, 96, 0.1), transparent 54%);
+  z-index: 2;
+}
+
+.world::after {
+  background:
+    radial-gradient(circle at 50% 50%, transparent 46%, rgba(5, 8, 14, 0.46) 100%),
+    linear-gradient(180deg, rgba(8, 11, 18, 0.08), rgba(8, 11, 18, 0.28));
+  z-index: 12;
+}
+
+.world__camera-plane {
   position: absolute;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
+  inset: -5%;
+  transform: translate(var(--camera-x), var(--camera-y)) scale(1.03);
+  transition: transform 900ms cubic-bezier(0.24, 0.86, 0.26, 1);
 }
 
-.fire-sprite {
-  --fire-core: #ffe2a3;
-  --fire-warm: var(--ember);
-  --fire-deep: #be5f37;
-  position: relative;
-  width: 96px;
-  height: 124px;
-  image-rendering: pixelated;
-}
-
-.fire-sprite__glow {
-  position: absolute;
-  left: 50%;
-  top: 54%;
-  width: 170px;
-  height: 160px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--ember) 64%, #ffbc74 36%) 0%, transparent 72%);
-  opacity: calc(0.32 + var(--fire-energy) * 0.26);
-  animation: glow-pulse 2.5s ease-in-out infinite;
-}
-
-.fire-sprite__flame,
-.fire-sprite__pit {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.fire-sprite__flame {
-  top: 20px;
-  width: 64px;
-  height: 46px;
-  animation: flame-flicker 1.4s steps(2, end) infinite;
-}
-
-.fire-sprite__pit {
-  top: 66px;
-  width: 70px;
-  height: 24px;
-}
-
-.fire-sprite__pixel {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  background: var(--tone);
-}
-
-.fire-sprite__ember {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: color-mix(in srgb, var(--ember) 70%, #ffe2af 30%);
-  border-radius: 1px;
-  left: 50%;
-  top: 48px;
-}
-
-.ember-a {
-  animation: ember-rise 2.8s linear infinite;
-}
-
-.ember-b {
-  animation: ember-rise 3.2s linear 0.9s infinite;
-}
-
-.ember-c {
-  animation: ember-rise 2.5s linear 1.4s infinite;
-}
-
+.landscape__sky,
+.landscape__atmosphere,
+.landscape__horizon,
+.landscape__cloudbank,
+.landscape__terrain,
+.landscape__moisture,
+.landscape__weather,
+.landscape__foreground,
+.world__firelight,
+.world__fire-anchor,
 .world-characters {
   position: absolute;
   inset: 0;
+}
+
+.landscape__sky {
+  background:
+    radial-gradient(1200px 650px at 50% 12%, rgba(249, 176, 98, 0.12), transparent 58%),
+    radial-gradient(900px 420px at 72% 18%, rgba(170, 199, 245, 0.12), transparent 64%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+  z-index: 1;
+  transition: background 980ms ease;
+}
+
+.landscape__atmosphere {
+  background:
+    radial-gradient(1100px 560px at 50% 55%, var(--fog), transparent 68%),
+    radial-gradient(900px 360px at 22% 42%, rgba(255, 245, 230, 0.07), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: calc(0.46 + var(--fire-energy) * 0.24);
+  z-index: 3;
+  transition: background 900ms ease, opacity 500ms ease;
+}
+
+.landscape__horizon {
+  z-index: 4;
+}
+
+.landscape__cloudbank {
+  z-index: 4;
+  opacity: 0.44;
+}
+
+.cloud {
+  position: absolute;
+  display: block;
+  width: 24%;
+  height: 12%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(202, 216, 236, 0.24), rgba(119, 141, 169, 0.06));
+  filter: blur(2px);
+  transition: opacity 700ms ease, transform 900ms ease, background 900ms ease;
+}
+
+.cloud--1 {
+  left: 8%;
+  top: 20%;
+}
+
+.cloud--2 {
+  left: 38%;
+  top: 15%;
+}
+
+.cloud--3 {
+  right: 7%;
+  top: 23%;
+}
+
+.ridge {
+  position: absolute;
+  display: block;
+  transition: background 820ms ease;
+}
+
+.landscape__horizon--far .ridge {
+  bottom: 44%;
+  background: color-mix(in srgb, var(--horizon-far) 84%, #222736 16%);
+  filter: blur(0.2px);
+}
+
+.ridge--a {
+  left: -8%;
+  width: 44%;
+  height: 26%;
+  clip-path: polygon(0 100%, 0 58%, 8% 60%, 20% 50%, 34% 53%, 48% 42%, 63% 49%, 79% 45%, 100% 53%, 100% 100%);
+}
+
+.ridge--b {
+  left: 28%;
+  width: 38%;
+  height: 28%;
+  clip-path: polygon(0 100%, 0 62%, 12% 54%, 26% 57%, 40% 46%, 56% 50%, 73% 42%, 88% 49%, 100% 46%, 100% 100%);
+}
+
+.ridge--c {
+  left: 58%;
+  width: 50%;
+  height: 27%;
+  clip-path: polygon(0 100%, 0 55%, 14% 61%, 28% 50%, 42% 55%, 58% 45%, 74% 49%, 88% 43%, 100% 50%, 100% 100%);
+}
+
+.landscape__horizon--mid .ridge {
+  bottom: 34%;
+  background: color-mix(in srgb, var(--horizon-mid) 78%, #1f2532 22%);
+  transition: background 850ms ease;
+}
+
+.ridge--d {
+  left: -4%;
+  width: 40%;
+  height: 24%;
+  clip-path: polygon(0 100%, 0 65%, 18% 56%, 32% 63%, 52% 48%, 70% 55%, 84% 50%, 100% 58%, 100% 100%);
+}
+
+.ridge--e {
+  left: 24%;
+  width: 48%;
+  height: 22%;
+  clip-path: polygon(0 100%, 0 61%, 12% 55%, 28% 60%, 43% 52%, 56% 56%, 72% 47%, 86% 53%, 100% 51%, 100% 100%);
+}
+
+.ridge--f {
+  left: 59%;
+  width: 45%;
+  height: 24%;
+  clip-path: polygon(0 100%, 0 58%, 16% 63%, 32% 53%, 49% 58%, 68% 49%, 84% 55%, 100% 52%, 100% 100%);
+}
+
+.tree-line {
+  position: absolute;
+  bottom: 36%;
+  width: 20%;
+  height: 12%;
+  opacity: 0.55;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(20, 20, 24, 0.5) 0,
+    rgba(20, 20, 24, 0.5) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+.tree-line--left {
+  left: 8%;
+}
+
+.tree-line--right {
+  right: 8%;
+}
+
+.landscape__terrain {
+  inset: auto -4% -18% -4%;
+  height: 58%;
+  z-index: 5;
+  background:
+    radial-gradient(140% 100% at 50% 0%, color-mix(in srgb, var(--terrain) 72%, #4f3a31 28%) 0%, transparent 58%),
+    linear-gradient(180deg, color-mix(in srgb, var(--terrain) 72%, #2d2a33 28%) 0%, var(--terrain) 82%);
+  clip-path: polygon(0 32%, 6% 30%, 14% 33%, 24% 29%, 34% 34%, 46% 31%, 56% 34%, 64% 31%, 74% 35%, 84% 30%, 93% 34%, 100% 32%, 100% 100%, 0 100%);
+  transition: background 900ms ease;
+}
+
+.landscape__moisture {
+  z-index: 6;
+  inset: auto 10% 18% 10%;
+  height: 14%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(201, 222, 236, 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.terrain-contour {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0.24;
+  background: linear-gradient(90deg, transparent, rgba(255, 210, 168, 0.36), transparent);
+}
+
+.contour--a {
+  left: 22%;
+  top: 32%;
+  width: 56%;
+  height: 2px;
+}
+
+.contour--b {
+  left: 27%;
+  top: 41%;
+  width: 44%;
+  height: 2px;
+}
+
+.contour--c {
+  left: 35%;
+  top: 52%;
+  width: 30%;
+  height: 2px;
+}
+
+.terrain-rock {
+  position: absolute;
+  border-radius: 4px;
+  background: rgba(33, 31, 38, 0.5);
+}
+
+.rock--a {
+  left: 24%;
+  top: 54%;
+  width: 16px;
+  height: 9px;
+}
+
+.rock--b {
+  right: 27%;
+  top: 58%;
+  width: 13px;
+  height: 7px;
+}
+
+.rock--c {
+  left: 57%;
+  top: 49%;
+  width: 11px;
+  height: 6px;
+}
+
+.world__firelight {
+  z-index: 6;
+  background:
+    radial-gradient(320px 190px at 50% 64%, var(--firelight), transparent 70%),
+    radial-gradient(560px 280px at 50% 68%, color-mix(in srgb, var(--ember) 15%, transparent 85%) 0%, transparent 72%);
+  opacity: calc(0.42 + var(--fire-energy) * 0.32);
+  transition: background 900ms ease, opacity 560ms ease;
+}
+
+.world__fire-anchor {
+  z-index: 8;
+  left: 50%;
+  top: 60%;
+  width: 260px;
+  height: 250px;
+  transform: translate(-50%, -50%);
+}
+
+.dhuni-fire {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.dhuni-fire__aura {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 300px;
+  height: 240px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--ember) 58%, #ffcf9f 42%) 0%, transparent 72%);
+  opacity: calc(0.35 + var(--fire-energy) * 0.35);
+  animation: fire-aura 2.8s ease-in-out infinite;
+}
+
+.dhuni-fire__groundlight {
+  position: absolute;
+  left: 50%;
+  top: 67%;
+  width: 220px;
+  height: 100px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--ember) 42%, #f7bf8a 58%) 0%, transparent 72%);
+  opacity: 0.34;
+}
+
+.dhuni-fire__pit {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  width: 150px;
+  height: 62px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 44% 44%;
+  background: linear-gradient(180deg, #4c3e38 0%, #2a2324 76%);
+  box-shadow:
+    inset 0 2px 0 rgba(248, 217, 178, 0.12),
+    0 0 26px rgba(228, 134, 71, 0.2);
+}
+
+.pit-stone {
+  position: absolute;
+  bottom: 8px;
+  width: 22px;
+  height: 13px;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #64524a, #3b3130);
+}
+
+.pit-stone.s1 {
+  left: 8px;
+}
+
+.pit-stone.s2 {
+  left: 32px;
+}
+
+.pit-stone.s3 {
+  left: 61px;
+}
+
+.pit-stone.s4 {
+  left: 88px;
+}
+
+.pit-stone.s5 {
+  left: 114px;
+}
+
+.dhuni-fire__coals {
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  width: 106px;
+  height: 34px;
+  transform: translateX(-50%);
+}
+
+.coal {
+  position: absolute;
+  border-radius: 6px;
+  background: radial-gradient(circle, rgba(248, 161, 93, 0.9), rgba(146, 64, 43, 0.9));
+  box-shadow: 0 0 14px rgba(243, 146, 78, 0.44);
+}
+
+.coal.c1 {
+  left: 8px;
+  top: 9px;
+  width: 18px;
+  height: 14px;
+}
+
+.coal.c2 {
+  left: 29px;
+  top: 4px;
+  width: 22px;
+  height: 16px;
+}
+
+.coal.c3 {
+  left: 55px;
+  top: 10px;
+  width: 20px;
+  height: 14px;
+}
+
+.coal.c4 {
+  left: 76px;
+  top: 7px;
+  width: 16px;
+  height: 13px;
+}
+
+.dhuni-fire__flames {
+  position: absolute;
+  left: 50%;
+  top: 21%;
+  width: 138px;
+  height: 150px;
+  transform: translateX(-50%);
+}
+
+.flame {
+  position: absolute;
+  bottom: 32px;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 0 12px rgba(241, 151, 80, 0.38));
+}
+
+.flame--back {
+  left: 22px;
+  width: 92px;
+  height: 108px;
+  background: linear-gradient(180deg, #ffe8b8 0%, color-mix(in srgb, var(--ember) 58%, #f9c78f 42%) 54%, #d36f42 100%);
+  clip-path: polygon(50% 0%, 58% 9%, 68% 18%, 72% 29%, 78% 41%, 72% 57%, 78% 70%, 68% 84%, 52% 100%, 38% 90%, 24% 95%, 15% 79%, 20% 65%, 13% 53%, 20% 41%, 24% 30%, 32% 18%, 41% 8%);
+  animation: flame-back 2.2s ease-in-out infinite;
+}
+
+.flame--mid {
+  left: 38px;
+  width: 60px;
+  height: 95px;
+  background: linear-gradient(180deg, #fff5d3 0%, #ffcf8f 52%, #e8844f 100%);
+  clip-path: polygon(50% 0%, 61% 12%, 71% 23%, 69% 38%, 75% 52%, 68% 67%, 72% 80%, 58% 100%, 45% 91%, 31% 98%, 20% 81%, 24% 65%, 17% 52%, 24% 36%, 30% 23%, 40% 12%);
+  animation: flame-mid 1.7s ease-in-out infinite;
+}
+
+.flame--front {
+  left: 50px;
+  width: 38px;
+  height: 80px;
+  background: linear-gradient(180deg, #fffde9 0%, #ffd89f 45%, #ed9a5f 100%);
+  clip-path: polygon(50% 0%, 64% 16%, 71% 30%, 68% 48%, 74% 63%, 66% 78%, 54% 100%, 42% 90%, 30% 98%, 20% 81%, 25% 61%, 16% 49%, 25% 32%, 34% 16%);
+  animation: flame-front 1.2s ease-in-out infinite;
+}
+
+.flame-pixel {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: color-mix(in srgb, var(--ember) 68%, #ffdcb0 32%);
+  opacity: 0.88;
+}
+
+.fp1 {
+  left: 34px;
+  top: 36px;
+}
+
+.fp2 {
+  left: 94px;
+  top: 48px;
+}
+
+.fp3 {
+  left: 44px;
+  top: 66px;
+}
+
+.fp4 {
+  left: 86px;
+  top: 76px;
+}
+
+.dhuni-fire__ember {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ember) 75%, #ffe4ba 25%);
+  left: 50%;
+  top: 102px;
+}
+
+.e1 {
+  animation: ember-rise 2.7s linear infinite;
+}
+
+.e2 {
+  animation: ember-rise 3.1s linear 0.8s infinite;
+}
+
+.e3 {
+  animation: ember-rise 2.4s linear 1.2s infinite;
+}
+
+.e4 {
+  animation: ember-rise 3.4s linear 1.9s infinite;
+}
+
+.world-characters {
+  z-index: 9;
   list-style: none;
   margin: 0;
   padding: 0;
-  z-index: 5;
 }
 
 .world-characters__item {
   position: absolute;
   transform: translate(-50%, -50%);
-  transition: transform 480ms ease;
+  transition: transform 620ms ease, filter 520ms ease;
 }
 
 .world-characters__item.is-active {
-  transform: translate(-50%, -52%);
+  transform: translate(-50%, -53%);
+  filter: saturate(1.1);
 }
 
 .world-character {
@@ -184,8 +518,8 @@
   padding: 0.2rem;
   background: transparent;
   cursor: pointer;
-  border-radius: 12px;
-  transition: transform 220ms ease, filter 220ms ease;
+  border-radius: 10px;
+  transition: transform 240ms ease;
 }
 
 .world-character:hover {
@@ -200,12 +534,12 @@
 .world-character__caption {
   position: absolute;
   left: 50%;
-  top: calc(100% + 0.2rem);
+  top: calc(100% + 0.3rem);
   transform: translateX(-50%);
   font-size: 0.56rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: rgba(230, 222, 206, 0.78);
+  color: rgba(232, 225, 211, 0.82);
   opacity: 0;
   transition: opacity 260ms ease;
   white-space: nowrap;
@@ -217,184 +551,301 @@
 }
 
 .character-sprite {
-  --character-accent: #cdb292;
+  --character-accent: #cab08f;
   position: relative;
   display: inline-block;
-  width: 32px;
-  height: 52px;
+  width: 34px;
+  height: 58px;
   image-rendering: pixelated;
-  animation: character-idle 3.6s ease-in-out infinite;
+  animation: character-idle 3.9s ease-in-out infinite;
 }
 
-.character-sprite__shadow {
+.character-sprite__ground {
   position: absolute;
-  left: 5px;
-  bottom: 1px;
-  width: 21px;
+  left: 7px;
+  bottom: 0;
+  width: 20px;
   height: 7px;
-  background: rgba(9, 8, 11, 0.42);
+  border-radius: 50%;
+  background: rgba(14, 12, 17, 0.48);
+}
+
+.character-sprite__legs {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  width: 14px;
+  height: 8px;
+  background: rgba(31, 29, 37, 0.66);
 }
 
 .character-sprite__torso {
   position: absolute;
   left: 8px;
-  bottom: 10px;
-  width: 16px;
-  height: 24px;
-  background: color-mix(in srgb, var(--character-accent) 52%, #424958 48%);
+  bottom: 15px;
+  width: 18px;
+  height: 23px;
+  background: color-mix(in srgb, var(--character-accent) 50%, #4d5362 50%);
 }
 
 .character-sprite__head {
   position: absolute;
   left: 10px;
-  bottom: 33px;
-  width: 12px;
-  height: 12px;
-  background: #d8b595;
+  bottom: 38px;
+  width: 14px;
+  height: 13px;
+  background: #d7b28e;
+}
+
+.character-sprite__hair {
+  position: absolute;
+  left: 9px;
+  bottom: 45px;
+  width: 16px;
+  height: 6px;
+  background: rgba(34, 30, 33, 0.88);
 }
 
 .character-sprite__prop {
   position: absolute;
-  left: 22px;
-  bottom: 15px;
+  left: 24px;
+  bottom: 19px;
   width: 9px;
-  height: 7px;
-  background: rgba(165, 190, 212, 0.55);
+  height: 8px;
+  background: rgba(163, 178, 198, 0.66);
 }
 
-.character-sprite__accent {
+.character-sprite__highlight {
   position: absolute;
-  left: 7px;
-  bottom: 22px;
+  left: 8px;
+  bottom: 26px;
   width: 4px;
-  height: 9px;
-  background: rgba(246, 211, 165, 0.6);
+  height: 8px;
+  background: rgba(255, 224, 188, 0.45);
 }
 
 .character-sprite.is-active {
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--character-accent) 58%, #f9d5a2 42%));
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--character-accent) 56%, #f5d6a9 44%));
+}
+
+.character-sprite.is-winter-listener .character-sprite__torso {
+  background: color-mix(in srgb, #9caac2 54%, #4a5264 46%);
 }
 
 .character-sprite.is-winter-listener .character-sprite__prop {
   width: 8px;
   height: 8px;
-  background: rgba(170, 181, 205, 0.72);
+  background: rgba(173, 185, 206, 0.76);
+}
+
+.character-sprite.is-summer-vidushi .character-sprite__torso {
+  background: color-mix(in srgb, #d69767 52%, #4d4c58 48%);
 }
 
 .character-sprite.is-summer-vidushi .character-sprite__prop {
   width: 10px;
   height: 5px;
-  background: rgba(226, 176, 121, 0.75);
+  bottom: 21px;
+  background: rgba(229, 176, 118, 0.78);
+}
+
+.character-sprite.is-monsoon-writer .character-sprite__torso {
+  background: color-mix(in srgb, #87b9ca 52%, #45505f 48%);
 }
 
 .character-sprite.is-monsoon-writer .character-sprite__prop {
   width: 11px;
-  height: 8px;
-  background: rgba(137, 189, 213, 0.8);
+  height: 7px;
+  background: rgba(141, 198, 219, 0.84);
+}
+
+.character-sprite.is-sharad-archivist .character-sprite__torso {
+  background: color-mix(in srgb, #b9a789 52%, #4f5060 48%);
 }
 
 .character-sprite.is-sharad-archivist .character-sprite__prop {
   width: 8px;
   height: 10px;
-  background: rgba(176, 171, 160, 0.75);
+  background: rgba(173, 169, 160, 0.8);
+}
+
+.landscape__weather {
+  z-index: 7;
+  pointer-events: none;
+}
+
+.weather {
+  position: absolute;
+  left: 16%;
+  top: 22%;
+  opacity: 0.45;
+}
+
+.weather--1 {
+  left: 15%;
+  top: 20%;
+}
+
+.weather--2 {
+  left: 36%;
+  top: 16%;
+}
+
+.weather--3 {
+  left: 55%;
+  top: 21%;
+}
+
+.weather--4 {
+  left: 74%;
+  top: 17%;
+}
+
+.weather--5 {
+  left: 86%;
+  top: 25%;
+}
+
+.landscape__foreground {
+  z-index: 10;
+  pointer-events: none;
+}
+
+.foreground-silhouette {
+  position: absolute;
+  bottom: -5%;
+  background: rgba(17, 17, 22, 0.38);
+}
+
+.fg--left {
+  left: -7%;
+  width: 30%;
+  height: 28%;
+  clip-path: polygon(0 100%, 0 54%, 14% 66%, 31% 48%, 48% 61%, 66% 50%, 82% 67%, 100% 58%, 100% 100%);
+}
+
+.fg--center {
+  left: 34%;
+  width: 32%;
+  height: 24%;
+  clip-path: polygon(0 100%, 0 63%, 15% 51%, 36% 63%, 57% 49%, 72% 62%, 100% 56%, 100% 100%);
+}
+
+.fg--right {
+  right: -7%;
+  width: 29%;
+  height: 30%;
+  clip-path: polygon(0 100%, 0 58%, 22% 49%, 37% 65%, 55% 50%, 74% 63%, 100% 52%, 100% 100%);
 }
 
 .top-hud {
   position: absolute;
-  top: clamp(0.6rem, 2.1vh, 1.2rem);
+  z-index: 20;
+  top: clamp(0.65rem, 2.2vh, 1.35rem);
   left: 50%;
   transform: translateX(-50%);
-  width: min(94vw, 980px);
-  z-index: 10;
+  width: min(92vw, 700px);
   display: grid;
-  gap: 0.18rem;
-  padding: 0.45rem 0.7rem;
-  border-radius: 14px;
-  background: linear-gradient(165deg, color-mix(in srgb, var(--hud-glass) 82%, transparent 18%), transparent);
-  backdrop-filter: blur(7px);
+  justify-items: center;
+  gap: 0.12rem;
+  padding: 0.32rem 0.58rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--hud-glass) 86%, transparent 14%), transparent);
+  backdrop-filter: blur(8px);
+  opacity: 0.82;
+  transition: opacity 260ms ease;
+}
+
+.top-hud:hover,
+.top-hud:focus-within {
+  opacity: 1;
 }
 
 .top-hud__brand {
   font-family: var(--ui-serif);
-  font-size: 0.88rem;
-  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--hud-accent) 74%, #f9efe0 26%);
+  color: color-mix(in srgb, var(--hud-accent) 72%, #f2e6d1 28%);
 }
 
-.top-hud__station h1 {
-  font-size: clamp(1rem, 2.2vw, 1.35rem);
+.top-hud__line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: clamp(0.78rem, 1.45vw, 1rem);
+  color: rgba(239, 231, 217, 0.94);
+}
+
+.top-hud__name {
   font-family: var(--ui-serif);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
 }
 
-.top-hud__station p,
-.top-hud__meta,
-.top-hud__state {
-  color: var(--text-soft);
-}
-
-.top-hud__station p {
-  font-size: clamp(0.66rem, 0.95vw, 0.78rem);
-}
-
-.top-hud__meta {
-  display: flex;
-  gap: 0.38rem;
-  flex-wrap: wrap;
-  font-size: 0.55rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.top-hud__meta span {
-  border: 1px solid rgba(226, 212, 188, 0.24);
-  border-radius: 999px;
-  padding: 0.08rem 0.36rem;
-}
-
-.top-hud__state {
-  font-size: 0.58rem;
+.top-hud__dot,
+.top-hud__tag {
+  font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: rgba(224, 214, 198, 0.82);
 }
 
-.top-hud__state.is-active {
-  color: color-mix(in srgb, var(--hud-accent) 68%, #f6debb 32%);
+.top-hud__tagline,
+.top-hud__state {
+  font-size: 0.58rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(215, 209, 196, 0.76);
 }
 
 .control-dock {
   position: absolute;
+  z-index: 20;
   left: 50%;
-  bottom: clamp(0.45rem, 2.2vh, 1.1rem);
+  bottom: clamp(0.5rem, 2.4vh, 1.2rem);
   transform: translateX(-50%);
-  width: min(95vw, 860px);
-  z-index: 10;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.42rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.42rem 0.54rem;
+  gap: 0.3rem;
+  padding: 0.3rem 0.44rem;
   border-radius: 999px;
-  background: linear-gradient(170deg, color-mix(in srgb, var(--hud-glass) 88%, transparent 12%), transparent);
-  backdrop-filter: blur(9px);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--hud-glass) 92%, transparent 8%), transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(224, 209, 182, 0.15);
 }
 
 .dock-button {
-  border: 1px solid rgba(226, 212, 188, 0.24);
+  border: 1px solid rgba(219, 206, 184, 0.24);
   border-radius: 999px;
-  background: rgba(22, 19, 26, 0.52);
-  color: color-mix(in srgb, var(--hud-accent) 54%, #f7ecdb 46%);
-  font-size: 0.61rem;
-  letter-spacing: 0.12em;
+  background: rgba(20, 19, 25, 0.52);
+  color: color-mix(in srgb, var(--hud-accent) 64%, #f5ebda 36%);
+  min-width: 34px;
+  height: 30px;
+  padding: 0 0.55rem;
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.28rem 0.62rem;
   cursor: pointer;
 }
 
-.dock-button:hover {
-  border-color: rgba(241, 190, 129, 0.55);
+.dock-button--primary {
+  min-width: 58px;
+}
+
+.dock-volume {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.18rem;
+  font-size: 0.52rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(223, 214, 198, 0.72);
+}
+
+.dock-volume input {
+  width: min(110px, 20vw);
+  accent-color: color-mix(in srgb, var(--ember) 72%, #ffd5a8 28%);
 }
 
 .dock-button:focus-visible,
@@ -403,95 +854,177 @@
   outline-offset: 2px;
 }
 
-.dock-volume {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.36rem;
-  font-size: 0.56rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-}
-
-.dock-volume input {
-  width: min(150px, 24vw);
-  accent-color: color-mix(in srgb, var(--ember) 68%, #ffd3a0 32%);
-}
-
-.dock-keys {
-  font-size: 0.53rem;
-  letter-spacing: 0.1em;
-  color: rgba(207, 201, 188, 0.75);
-  text-transform: uppercase;
-}
-
 .world.is-switching {
   filter: saturate(1.08);
 }
 
-.world.is-playing .world__atmosphere {
-  opacity: calc(0.52 + var(--fire-energy) * 0.32);
+.world.is-playing .dhuni-fire__aura {
+  opacity: calc(0.42 + var(--fire-energy) * 0.4);
 }
 
-.world--winter .weather-particle {
+.world--winter .landscape__horizon--far .ridge {
+  background: color-mix(in srgb, var(--horizon-far) 84%, #61779a 16%);
+}
+
+.world--winter .landscape__cloudbank .cloud {
+  opacity: 0.45;
+  transform: translateY(-4px);
+}
+
+.world--winter .weather {
   width: 4px;
   height: 4px;
-  animation: drift-soft 8s ease-in-out infinite;
+  border-radius: 1px;
+  background: rgba(218, 232, 255, 0.8);
+  animation: winter-drift 8s ease-in-out infinite;
 }
 
-.world--summer .weather-particle {
-  width: 18px;
+.world--summer .landscape__atmosphere {
+  background:
+    radial-gradient(1100px 560px at 50% 56%, color-mix(in srgb, var(--fog) 85%, #f4b277 15%), transparent 68%),
+    radial-gradient(900px 360px at 25% 42%, rgba(255, 223, 181, 0.08), transparent 70%);
+}
+
+.world--summer .landscape__cloudbank .cloud {
+  opacity: 0.16;
+  filter: blur(3px);
+}
+
+.world--summer .landscape__horizon--far .ridge--a {
+  clip-path: polygon(0 100%, 0 64%, 14% 59%, 28% 61%, 46% 53%, 62% 57%, 80% 52%, 100% 58%, 100% 100%);
+}
+
+.world--summer .landscape__horizon--far .ridge--c {
+  clip-path: polygon(0 100%, 0 62%, 18% 58%, 38% 61%, 56% 54%, 74% 57%, 100% 55%, 100% 100%);
+}
+
+.world--summer .landscape__terrain {
+  clip-path: polygon(0 36%, 9% 34%, 18% 37%, 29% 34%, 42% 38%, 54% 34%, 67% 39%, 80% 34%, 91% 37%, 100% 35%, 100% 100%, 0 100%);
+}
+
+.world--summer .weather {
+  width: 16px;
   height: 2px;
-  opacity: 0.2;
-  animation: shimmer 3.6s ease-in-out infinite;
+  background: rgba(255, 198, 125, 0.42);
+  animation: summer-shimmer 3.8s ease-in-out infinite;
 }
 
-.world--monsoon .weather-particle {
+.world--monsoon .landscape__horizon--far .ridge {
+  background: color-mix(in srgb, var(--horizon-far) 80%, #2f4d63 20%);
+}
+
+.world--monsoon .landscape__horizon--far .ridge--b {
+  height: 31%;
+  clip-path: polygon(0 100%, 0 70%, 11% 61%, 24% 66%, 40% 53%, 54% 60%, 70% 49%, 86% 57%, 100% 52%, 100% 100%);
+}
+
+.world--monsoon .landscape__horizon--mid .ridge--e {
+  height: 25%;
+}
+
+.world--monsoon .landscape__atmosphere {
+  opacity: calc(0.55 + var(--fire-energy) * 0.2);
+}
+
+.world--monsoon .landscape__cloudbank .cloud {
+  opacity: 0.62;
+  background: linear-gradient(180deg, rgba(108, 130, 149, 0.38), rgba(43, 59, 74, 0.12));
+  transform: translateY(6px);
+}
+
+.world--monsoon .landscape__moisture {
+  opacity: 0.56;
+}
+
+.world--monsoon .weather {
   width: 2px;
   height: 18px;
-  opacity: 0.35;
-  animation: rain-fall 1.8s linear infinite;
+  border-radius: 0;
+  background: rgba(170, 216, 238, 0.5);
+  animation: monsoon-rain 1.7s linear infinite;
 }
 
-.world--post-monsoon .weather-particle {
+.world--post-monsoon .weather {
   width: 5px;
   height: 5px;
-  animation: twinkle 4.3s ease-in-out infinite;
+  border-radius: 2px;
+  background: rgba(241, 224, 182, 0.72);
+  animation: postmonsoon-flicker 4.1s ease-in-out infinite;
 }
 
-@keyframes glow-pulse {
+.world--post-monsoon .landscape__cloudbank .cloud {
+  opacity: 0.3;
+  transform: translateY(-2px);
+}
+
+.world--post-monsoon .landscape__moisture {
+  opacity: 0.28;
+}
+
+.world--post-monsoon .landscape__horizon--far .ridge {
+  background: color-mix(in srgb, var(--horizon-far) 76%, #4f5f4a 24%);
+}
+
+.world--post-monsoon .landscape__horizon--mid .ridge {
+  background: color-mix(in srgb, var(--horizon-mid) 74%, #4a5b47 26%);
+}
+
+@keyframes fire-aura {
   0%,
   100% {
-    transform: translate(-50%, -50%) scale(0.96);
-    opacity: 0.52;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.45;
   }
   50% {
     transform: translate(-50%, -50%) scale(1.03);
-    opacity: 0.86;
+    opacity: 0.92;
   }
 }
 
-@keyframes flame-flicker {
+@keyframes flame-back {
   0%,
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(0) scale(1);
+  }
+  45% {
+    transform: translateX(-2px) scale(1.05, 0.95);
+  }
+  75% {
+    transform: translateX(2px) scale(0.97, 1.04);
+  }
+}
+
+@keyframes flame-mid {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
   }
   50% {
-    transform: translateX(-51%) translateY(-2px);
+    transform: translateX(1px) scale(1.04, 0.96);
+  }
+}
+
+@keyframes flame-front {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  55% {
+    transform: translateX(-1px) scale(1.06, 0.95);
   }
 }
 
 @keyframes ember-rise {
   0% {
     opacity: 0;
-    transform: translate(-2px, 0);
+    transform: translate(-2px, 0) scale(0.8);
   }
   20% {
-    opacity: 0.92;
+    opacity: 0.9;
   }
   100% {
     opacity: 0;
-    transform: translate(15px, -70px);
+    transform: translate(20px, -92px) scale(1.25);
   }
 }
 
@@ -501,124 +1034,117 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-1.6px);
+    transform: translateY(-1.5px);
   }
 }
 
-@keyframes drift-soft {
+@keyframes winter-drift {
   0%,
   100% {
     transform: translateY(0);
-    opacity: 0.35;
+    opacity: 0.3;
   }
   50% {
-    transform: translateY(-10px);
-    opacity: 0.9;
+    transform: translateY(-12px);
+    opacity: 0.95;
   }
 }
 
-@keyframes shimmer {
+@keyframes summer-shimmer {
   0%,
   100% {
     transform: translateX(0) scaleX(1);
   }
   50% {
-    transform: translateX(12px) scaleX(1.24);
+    transform: translateX(12px) scaleX(1.22);
   }
 }
 
-@keyframes rain-fall {
+@keyframes monsoon-rain {
   0% {
-    transform: translateY(-30px);
+    transform: translateY(-40px);
     opacity: 0;
   }
-  18% {
-    opacity: 0.4;
+  15% {
+    opacity: 0.5;
   }
   100% {
-    transform: translateY(120px);
+    transform: translateY(140px);
     opacity: 0;
   }
 }
 
-@keyframes twinkle {
+@keyframes postmonsoon-flicker {
   0%,
   100% {
-    opacity: 0.18;
+    opacity: 0.22;
   }
   50% {
-    opacity: 0.95;
+    opacity: 1;
   }
 }
 
-@media (max-width: 900px) {
-  .top-hud {
-    width: min(95vw, 700px);
-  }
-
-  .control-dock {
-    border-radius: 24px;
-    width: min(95vw, 700px);
-    justify-content: flex-start;
-  }
-
-  .dock-keys {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-@media (max-width: 640px) {
+@media (max-width: 920px) {
   .world__fire-anchor {
-    top: 61%;
-    transform: translate(-50%, -50%) scale(0.86);
+    transform: translate(-50%, -50%) scale(0.92);
   }
 
   .world-characters__item {
-    transform: translate(-50%, -50%) scale(0.94);
-  }
-
-  .top-hud {
-    padding: 0.38rem 0.52rem;
-  }
-
-  .top-hud__station p,
-  .top-hud__meta {
-    display: none;
+    transform: translate(-50%, -50%) scale(0.95);
   }
 
   .control-dock {
-    gap: 0.32rem;
-    padding: 0.42rem 0.45rem;
+    bottom: 0.45rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .top-hud {
+    width: min(94vw, 520px);
+    gap: 0.08rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  .top-hud__tagline,
+  .top-hud__state {
+    display: none;
+  }
+
+  .world__fire-anchor {
+    top: 62%;
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+
+  .world-characters__item {
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+
+  .control-dock {
+    gap: 0.24rem;
+    padding: 0.24rem 0.34rem;
   }
 
   .dock-volume {
-    order: 6;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .dock-volume input {
-    width: min(220px, 56vw);
-  }
-
-  .dock-keys {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .world__sky,
-  .world__atmosphere,
-  .world__weather,
-  .world__ground,
+  .world,
+  .world__camera-plane,
+  .landscape__sky,
+  .landscape__atmosphere,
+  .landscape__horizon,
+  .landscape__terrain,
+  .dhuni-fire__aura,
+  .flame,
+  .dhuni-fire__ember,
+  .weather,
+  .character-sprite,
   .world-characters__item,
   .world-character,
-  .fire-sprite__glow,
-  .fire-sprite__flame,
-  .fire-sprite__ember,
-  .weather-particle,
-  .character-sprite {
+  .top-hud,
+  .control-dock {
     animation: none;
     transition: none;
   }

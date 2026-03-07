@@ -14,11 +14,13 @@ export function CharacterSprite({ spriteType, accent, isActive }: CharacterSprit
       style={{ '--character-accent': accent } as CSSProperties}
       aria-hidden="true"
     >
-      <span className="character-sprite__shadow" />
+      <span className="character-sprite__ground" />
+      <span className="character-sprite__legs" />
       <span className="character-sprite__torso" />
       <span className="character-sprite__head" />
+      <span className="character-sprite__hair" />
       <span className="character-sprite__prop" />
-      <span className="character-sprite__accent" />
+      <span className="character-sprite__highlight" />
     </span>
   );
 }

@@ -33,7 +33,7 @@ export function ControlDock({
 
       <button
         type="button"
-        className="dock-button"
+        className="dock-button dock-button--primary"
         onClick={onTogglePower}
         aria-pressed={isPowered}
         aria-keyshortcuts="Space"
@@ -52,7 +52,7 @@ export function ControlDock({
       </button>
 
       <label className="dock-volume" htmlFor="dock-volume-range">
-        <span>Volume</span>
+        <span>Vol</span>
         <input
           id="dock-volume-range"
           type="range"
@@ -75,8 +75,6 @@ export function ControlDock({
       >
         Next
       </button>
-
-      <p className="dock-keys">Keys: Space, Left/Right, Up/Down, M, Home/End, Enter</p>
     </section>
   );
 }
