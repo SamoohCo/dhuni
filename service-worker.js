@@ -4,7 +4,7 @@
 // YouTube streams are not cached (network-only by fallthrough).
 // ============================================================
 
-const CACHE = 'dhuni-v2';
+const CACHE = 'dhuni-v3';
 const STATIC = [
   '/',
   '/index.html',
@@ -12,6 +12,8 @@ const STATIC = [
   '/main.js',
   '/stations.js',
   '/manifest.json',
+  '/favicon.svg',
+  '/og.svg',
 ];
 
 self.addEventListener('install', event => {
