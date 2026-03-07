@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { Station } from '../data/stations';
 import { CharacterSprite } from './CharacterSprite';
 import { FireSprite } from './FireSprite';
@@ -25,6 +25,15 @@ const CHARACTER_POSITIONS = [
   { x: 33, y: 66, scale: 0.97 },
 ];
 
+const MOBILE_CHARACTER_POSITIONS = [
+  { x: 38, y: 64, scale: 0.9 },
+  { x: 62, y: 64, scale: 0.9 },
+  { x: 70, y: 70, scale: 0.97 },
+  { x: 58, y: 76, scale: 1.03 },
+  { x: 42, y: 76, scale: 1.03 },
+  { x: 30, y: 70, scale: 0.97 },
+];
+
 export function DhuniScene({
   stations,
   stationIndex,
@@ -37,6 +46,9 @@ export function DhuniScene({
   onActivateStation,
 }: DhuniSceneProps) {
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [isCompactViewport, setIsCompactViewport] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 680px)').matches : false,
+  );
 
   useEffect(() => {
     const focused = document.activeElement;
@@ -46,6 +58,24 @@ export function DhuniScene({
 
     buttonRefs.current[stationIndex]?.focus();
   }, [stationIndex]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia('(max-width: 680px)');
+    const handleChange = () => {
+      setIsCompactViewport(mediaQuery.matches);
+    };
+
+    handleChange();
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
 
   const worldStyle = {
     '--sky-top': currentStation.palette.skyTop,
@@ -59,6 +89,7 @@ export function DhuniScene({
     '--accent': currentStation.palette.accent,
     '--fire-energy': fireEnergy.toFixed(2),
   } as CSSProperties;
+  const characterPositions = isCompactViewport ? MOBILE_CHARACTER_POSITIONS : CHARACTER_POSITIONS;
 
   return (
     <section
@@ -77,7 +108,7 @@ export function DhuniScene({
 
         <ol className="world-characters" aria-label="Characters around the dhuni">
           {stations.map((station, index) => {
-            const position = CHARACTER_POSITIONS[index] ?? CHARACTER_POSITIONS[index % CHARACTER_POSITIONS.length];
+            const position = characterPositions[index] ?? characterPositions[index % characterPositions.length];
             const isActive = index === stationIndex;
 
             return (
