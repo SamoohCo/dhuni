@@ -42,9 +42,9 @@ export function updateMediaSession(
       album: station.tagline,
       artwork: [
         {
-          src: `${appUrl}dhuni-mark.svg`,
-          sizes: '512x512',
-          type: 'image/svg+xml',
+          src: `${appUrl}apple-touch-icon.png`,
+          sizes: '180x180',
+          type: 'image/png',
         },
       ],
     });
