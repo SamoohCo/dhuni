@@ -69,6 +69,13 @@ function App() {
         onNextStation={radio.nextStation}
       />
 
+      <footer className="world-credit">
+        Handcrafted with love by{' '}
+        <a href="https://samooh.com" target="_blank" rel="noreferrer noopener">
+          Samooh
+        </a>
+      </footer>
+
       {/* Hidden YouTube player host keeps playback infrastructure off-stage. */}
       <div ref={radio.playerHostRef} className="youtube-host" aria-hidden="true" />
     </main>

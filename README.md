@@ -1,6 +1,7 @@
 # Dhuni
 
 Dhuni is a full-screen sacred listening landscape for Indian sound.
+Built by [Samooh](https://samooh.com).
 
 The browser window itself is the world:
 - layered atmosphere and horizon depth
@@ -66,6 +67,11 @@ Important fields:
 - `spriteType`, `environmentType`
 - `palette` (`sky`, `horizon`, `terrain`, `fog`, `ember`, `hud` tones)
 
+If you want to update stations quickly, collect this per season:
+- required: `playlistId` (YouTube playlist ID only, not full URL)
+- recommended: `name` and `tagline`
+- optional: `mood`, `tradition`, `description`
+
 Current seasonal worlds:
 - Winter
 - Summer
@@ -112,6 +118,20 @@ Browsers may block autoplay until a direct user interaction occurs.
 Dhuni handles this with:
 - interaction-led playback attempts
 - graceful retry/error state when blocked
+
+## SEO + social assets
+
+- Metadata and schema live in `index.html`.
+- Social/brand assets live in `public/`:
+  - `og-image.png` (1200x630)
+  - `favicon.svg`
+  - `favicon-32.png`
+  - `apple-touch-icon.png`
+- To regenerate PNG assets:
+
+```bash
+python3 scripts/generate_assets.py
+```
 
 ## GitHub Pages deployment
 

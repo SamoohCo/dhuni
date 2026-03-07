@@ -101,7 +101,6 @@ export function DhuniScene({
                     isActive={isActive}
                   />
                 </button>
-                <span className="world-character__caption">{station.name}</span>
               </li>
             );
           })}

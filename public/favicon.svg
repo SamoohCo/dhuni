@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Dhuni">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1f2a43" />
+      <stop offset="100%" stop-color="#0f1422" />
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="58%" r="45%">
+      <stop offset="0%" stop-color="#f3b26d" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#f3b26d" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff1cc" />
+      <stop offset="50%" stop-color="#f4bd81" />
+      <stop offset="100%" stop-color="#d67b4f" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <ellipse cx="32" cy="40" rx="18" ry="10" fill="url(#aura)" />
+  <ellipse cx="32" cy="43" rx="14" ry="6" fill="#2e2526" />
+  <path d="M32 16c5 6 8 10 8 16 0 7-4 12-8 16-4-4-8-9-8-16 0-6 3-10 8-16z" fill="url(#flame)" />
+  <path d="M32 22c3 4 4 7 4 11 0 5-2 8-4 11-2-3-4-6-4-11 0-4 1-7 4-11z" fill="#fff7de" opacity="0.6" />
+</svg>
