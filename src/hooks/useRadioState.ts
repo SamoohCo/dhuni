@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
-import {
-  STATION_LOCK_THRESHOLD,
-  clampDialPosition,
-  getNearestStationIndex,
-  getStationById,
-  stations,
-  type Station,
-} from '../data/stations';
+import { getStationById, stations, type Station } from '../data/stations';
 import { registerMediaSessionActions, updateMediaSession } from '../lib/mediaSession';
 import { loadPreferences, savePreferences } from '../lib/storage';
 import { YouTubePlaylistPlayer, type PlaybackState } from '../lib/youtubePlayer';
@@ -26,22 +19,22 @@ function getStatusText(params: {
   station: Station;
 }): string {
   if (params.error) {
-    return 'Signal interrupted';
+    return 'Signal disturbed';
   }
 
   if (!params.isPowered) {
-    return 'Power off';
+    return 'Gathering at the fire';
   }
 
   if (params.isConnecting) {
-    return 'Warming valves...';
+    return 'Tending the flame...';
   }
 
   if (params.isMuted) {
     return `Muted · ${params.station.name}`;
   }
 
-  return 'On Air';
+  return 'Listening together';
 }
 
 function buildAppBaseUrl(): string {
@@ -67,6 +60,11 @@ function runPlayProbe(
   }, PLAYBACK_PROBE_MS);
 }
 
+function wrapStationIndex(index: number): number {
+  const count = stations.length;
+  return ((index % count) + count) % count;
+}
+
 export function useRadioState() {
   const initialPreferences = useMemo(() => loadPreferences(), []);
 
@@ -81,15 +79,13 @@ export function useRadioState() {
   }, [initialPreferences.stationId]);
 
   const [stationIndex, setStationIndex] = useState(initialStationIndex);
-  const [lockedStationIndex, setLockedStationIndex] = useState<number | null>(initialStationIndex);
-  const [tunePosition, setTunePosition] = useState(stations[initialStationIndex].dialPosition);
   const [volume, setVolume] = useState(clampVolume(initialPreferences.volume));
   const [isMuted, setIsMuted] = useState(initialPreferences.muted);
   const [isPowered, setIsPowered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [isSwitching, setIsSwitching] = useState(false);
+  const [isStationSwitching, setIsStationSwitching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const playerHostRef = useRef<HTMLDivElement | null>(null);
@@ -138,84 +134,58 @@ export function useRadioState() {
   }, []);
 
   const pulseSwitching = useCallback(() => {
-    setIsSwitching(true);
+    setIsStationSwitching(true);
 
     if (switchTimerRef.current !== null) {
       window.clearTimeout(switchTimerRef.current);
     }
 
     switchTimerRef.current = window.setTimeout(() => {
-      setIsSwitching(false);
+      setIsStationSwitching(false);
       switchTimerRef.current = null;
-    }, 420);
+    }, 520);
   }, []);
 
   const selectStation = useCallback(
-    (nextIndex: number, options?: { snapNeedle?: boolean }) => {
-      const bounded = Math.min(stations.length - 1, Math.max(0, nextIndex));
+    (nextIndex: number) => {
+      const bounded = wrapStationIndex(nextIndex);
 
       setStationIndex((previous) => {
         if (previous !== bounded) {
           pulseSwitching();
-          // Optional hook: trigger subtle tuning/static SFX here.
         }
+
         return bounded;
       });
-
-      setLockedStationIndex(bounded);
-
-      if (options?.snapNeedle ?? true) {
-        setTunePosition(stations[bounded].dialPosition);
-      }
 
       setError(null);
     },
     [pulseSwitching],
   );
 
-  const previousStation = useCallback(() => {
-    selectStation(stationIndexRef.current - 1, { snapNeedle: true });
-  }, [selectStation]);
-
-  const nextStation = useCallback(() => {
-    selectStation(stationIndexRef.current + 1, { snapNeedle: true });
-  }, [selectStation]);
-
-  const firstStation = useCallback(() => {
-    selectStation(0, { snapNeedle: true });
-  }, [selectStation]);
-
-  const lastStation = useCallback(() => {
-    selectStation(stations.length - 1, { snapNeedle: true });
-  }, [selectStation]);
-
-  const setTunePositionLive = useCallback(
-    (value: number) => {
-      const nextPosition = clampDialPosition(value);
-      setTunePosition(nextPosition);
-
-      const nearestIndex = getNearestStationIndex(nextPosition);
-      const nearestDistance = Math.abs(stations[nearestIndex].dialPosition - nextPosition);
-
-      if (nearestDistance <= STATION_LOCK_THRESHOLD) {
-        setLockedStationIndex(nearestIndex);
-
-        if (nearestIndex !== stationIndexRef.current) {
-          selectStation(nearestIndex, { snapNeedle: false });
-        }
-
-        return;
-      }
-
-      setLockedStationIndex(null);
+  const activateStation = useCallback(
+    (nextIndex: number) => {
+      selectStation(nextIndex);
+      setIsPowered(true);
     },
     [selectStation],
   );
 
-  const commitTunePosition = useCallback(() => {
-    const nearest = lockedStationIndex ?? getNearestStationIndex(tunePosition);
-    selectStation(nearest, { snapNeedle: true });
-  }, [lockedStationIndex, selectStation, tunePosition]);
+  const previousStation = useCallback(() => {
+    selectStation(stationIndexRef.current - 1);
+  }, [selectStation]);
+
+  const nextStation = useCallback(() => {
+    selectStation(stationIndexRef.current + 1);
+  }, [selectStation]);
+
+  const firstStation = useCallback(() => {
+    selectStation(0);
+  }, [selectStation]);
+
+  const lastStation = useCallback(() => {
+    selectStation(stations.length - 1);
+  }, [selectStation]);
 
   const setVolumeLevel = useCallback((nextVolume: number) => {
     const normalized = clampVolume(nextVolume);
@@ -365,7 +335,7 @@ export function useRadioState() {
           setIsConnecting(false);
           setError(message);
         },
-        'Playback needs a direct user interaction. Tap power again to retry.',
+        'Playback needs a direct user interaction. Tap play once more to retry.',
       );
     }
   }, [currentStation.playlistId, isReady]);
@@ -402,7 +372,7 @@ export function useRadioState() {
           setIsConnecting(false);
           setError(message);
         },
-        'Playback was blocked by the browser. Use the power control once more.',
+        'Playback was blocked by the browser. Press play once more.',
       );
       return;
     }
@@ -440,9 +410,6 @@ export function useRadioState() {
     };
   }, [clearPlayProbe]);
 
-  const nearestStationDistance = Math.abs(stations[getNearestStationIndex(tunePosition)].dialPosition - tunePosition);
-  const lockStrength = Math.max(0, 1 - nearestStationDistance / 16);
-
   const statusText = getStatusText({
     isPowered,
     isConnecting,
@@ -451,25 +418,25 @@ export function useRadioState() {
     station: currentStation,
   });
 
+  const fireEnergy = isPowered ? (isPlaying ? 1 : 0.82) : 0.5;
+
   return {
     playerHostRef,
     stations,
     stationIndex,
     currentStation,
-    lockedStationIndex,
-    tunePosition,
     volume,
     isMuted,
     isPowered,
     isPlaying,
     isConnecting,
     isReady,
-    isSwitching,
+    isStationSwitching,
     error,
     statusText,
-    lockStrength,
-    setTunePositionLive,
-    commitTunePosition,
+    fireEnergy,
+    selectStation,
+    activateStation,
     previousStation,
     nextStation,
     firstStation,

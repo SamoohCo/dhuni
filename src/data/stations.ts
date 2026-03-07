@@ -1,105 +1,106 @@
+export type CharacterType =
+  | 'seer'
+  | 'cinephile'
+  | 'monsoon-coder'
+  | 'raaga-scholar'
+  | 'archivist'
+  | 'night-listener';
+
 export interface Station {
   id: string;
   name: string;
   tagline: string;
   playlistId: string;
-  dialPosition: number;
+  order: number;
+  characterType?: CharacterType;
   mood?: string;
   era?: string;
   city?: string;
-  description?: string;
+  accent?: string;
+  shortDescription?: string;
 }
 
 export const stations: Station[] = [
   {
     id: 'raga-dawn',
     name: 'Raga Dawn',
-    tagline: 'Morning alaap, tanpura and first light.',
+    tagline: 'First light, tanpura, and unhurried breath.',
     playlistId: 'PLnA3oaYvI6k6jYFfTjJ7fX9M2nPzC8qv2',
-    dialPosition: 7,
+    order: 0,
+    characterType: 'seer',
     mood: 'Meditative',
     era: 'Classical',
     city: 'Varanasi',
-    description: 'Slow Hindustani mornings and devotional textures.',
+    accent: '#f1c88f',
+    shortDescription: 'A quiet early riser listening before the city wakes.',
   },
   {
     id: 'bombay-retro',
     name: 'Bombay Retro',
-    tagline: 'Celluloid strings, brass and vinyl hiss.',
+    tagline: 'Old cinema strings and rain on marine roads.',
     playlistId: 'PL4fGSI1pDJn5hdb0wqV4Oe4IYQ5m7vxr4',
-    dialPosition: 26,
+    order: 1,
+    characterType: 'cinephile',
     mood: 'Golden',
     era: '1950s-1970s',
-    city: 'Bombay',
-    description: 'Film-era orchestration and timeless playback voices.',
+    city: 'Mumbai',
+    accent: '#e9a56c',
+    shortDescription: 'A city-night romantic carrying a pocket notebook of songs.',
   },
   {
     id: 'monsoon-instrumentals',
     name: 'Monsoon Instrumentals',
-    tagline: 'Rain-washed sitar, sarod and late-evening ambience.',
+    tagline: 'Cloud-light ragas and drifting instrumental rain.',
     playlistId: 'PLDcnymzs18LVyNfYQy6QfM6xG5jD4b9L7',
-    dialPosition: 45,
-    mood: 'Ambient',
+    order: 2,
+    characterType: 'monsoon-coder',
+    mood: 'Rainy',
     era: 'Contemporary',
     city: 'Kolkata',
-    description: 'Instrumental Indian soundscapes for weathered afternoons.',
+    accent: '#9dc8d4',
+    shortDescription: 'A soft-lit laptop listener writing through monsoon nights.',
   },
   {
     id: 'hindustani-evening',
     name: 'Hindustani Evening',
-    tagline: 'Vilambit to drut as dusk settles.',
+    tagline: 'Vilambit patience, drut release, dusk devotion.',
     playlistId: 'PLRBp0Fe2GpgnIh0AiYKh7o7HnYAej-5ph',
-    dialPosition: 63,
-    mood: 'Deep Listening',
+    order: 3,
+    characterType: 'raaga-scholar',
+    mood: 'Focused',
     era: 'Concert',
     city: 'Delhi',
-    description: 'Evening ragas with expansive live performance arcs.',
+    accent: '#d9b48d',
+    shortDescription: 'A raga student listening with complete attention.',
   },
   {
     id: 'air-archive',
     name: 'AIR Archive',
-    tagline: 'Broadcast memory from the national airwaves.',
+    tagline: 'Broadcast memory, static warmth, and public airwaves.',
     playlistId: 'PL590L5WQmH8fJ54FqHf9h0xJk1Yw2D7Pp',
-    dialPosition: 84,
+    order: 4,
+    characterType: 'archivist',
     mood: 'Archival',
     era: 'Broadcast',
     city: 'All India Radio',
-    description: 'Historic broadcast textures and archival speech music blends.',
+    accent: '#b9af9b',
+    shortDescription: 'An archivist with headphones preserving broadcast history.',
   },
   {
-    id: 'night-transistor',
-    name: 'Night Transistor',
-    tagline: 'Low-lit ghazal, lounge and instrumental drift.',
+    id: 'midnight-tanpura',
+    name: 'Midnight Tanpura',
+    tagline: 'Deep-night drone and luminous stillness.',
     playlistId: 'PLzCxunOM5WFJHh4X4x7B6Y6m2f8r8h2Yd',
-    dialPosition: 97,
+    order: 5,
+    characterType: 'night-listener',
     mood: 'Nocturnal',
-    era: 'Vintage to Modern',
-    city: 'Mumbai',
-    description: 'After-hours listening for long, unhurried nights.',
+    era: 'Ambient',
+    city: 'Bengaluru',
+    accent: '#b1a3df',
+    shortDescription: 'A midnight listener resting in long tanpura overtones.',
   },
 ];
 
-export const STATION_LOCK_THRESHOLD = 6;
-
-export function clampDialPosition(value: number): number {
-  return Math.min(100, Math.max(0, value));
-}
-
 export function getStationById(stationId: string): Station | undefined {
   return stations.find((station) => station.id === stationId);
-}
-
-export function getNearestStationIndex(position: number): number {
-  let nearest = 0;
-  let nearestDistance = Number.POSITIVE_INFINITY;
-
-  stations.forEach((station, index) => {
-    const distance = Math.abs(station.dialPosition - position);
-    if (distance < nearestDistance) {
-      nearest = index;
-      nearestDistance = distance;
-    }
-  });
-
-  return nearest;
 }

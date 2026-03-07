@@ -1,15 +1,20 @@
 # Dhuni
 
-Dhuni is a static, tactile internet radio web app inspired by vintage Indian tabletop radios.
+Dhuni is a static web app for ambient Indian internet radio, now presented as a calm pixel-art-inspired night scene centered around a sacred fire.
 
-The interface is intentionally a single object: a tuned dial, a tuning knob, and a volume knob, with YouTube playlist playback hidden behind a radio-first UI.
+The interface is a tiny digital campfire:
+- a central dhuni flame
+- 6 listeners gathered around it (each character maps to one playlist/station)
+- minimal controls for play/pause, mute, and volume
+
+No dashboard UI, no game systems, no visible YouTube chrome.
 
 ## Stack
 
 - Vite
 - React + TypeScript
-- Plain handcrafted CSS
-- YouTube Iframe Player API (wrapped behind a local player abstraction)
+- Plain CSS (handcrafted scene styling)
+- YouTube Iframe Player API through a local wrapper abstraction
 
 ## Quick start
 
@@ -27,97 +32,94 @@ npm run preview
 
 ## Project structure
 
-- `src/data/stations.ts`: station catalog and dial positions (main content config)
-- `src/lib/youtubePlayer.ts`: YouTube playback wrapper used by the app (UI never talks to raw embed APIs)
-- `src/hooks/useRadioState.ts`: radio behavior/state orchestration
-- `src/components/*`: handcrafted radio parts
-- `src/styles/*`: layered visual styling for the radio object
+- `src/data/stations.ts`: character/station config (single source of truth)
+- `src/hooks/useRadioState.ts`: playback + station selection state orchestration
+- `src/lib/youtubePlayer.ts`: hidden YouTube playlist player abstraction
+- `src/components/DhuniScene.tsx`: main ambient world scene
+- `src/components/CharacterSprite.tsx`: station character silhouettes
+- `src/components/NowPlayingPanel.tsx`: minimal metadata + controls strip
+- `src/hooks/useKeyboardShortcuts.ts`: global keyboard behaviors
+- `.github/workflows/deploy-pages.yml`: GitHub Pages build/deploy
 
-## Station config
+## Character/station config
 
-Edit `src/data/stations.ts` to update stations. Each station supports:
+Edit `src/data/stations.ts`.
 
+Each entry includes:
 - `id`
 - `name`
 - `tagline`
 - `playlistId`
-- `dialPosition` (0-100 scale)
-- optional: `mood`, `era`, `city`, `description`
+- `order`
+- optional: `characterType`, `mood`, `era`, `city`, `accent`, `shortDescription`
 
-Swapping playlist IDs is enough to change programming.
-Use public YouTube playlist IDs that allow embedding for reliable playback.
+Characters and playlists are the same thing conceptually:
+- one character = one station = one YouTube playlist
 
-## YouTube integration architecture
+## Playlist mapping model
 
-Playback is intentionally off-stage:
+Dhuni keeps the same zero-cost architecture:
+- playlists are local config entries
+- selecting a character changes station
+- playback is loaded from that character's `playlistId`
 
-- YouTube iframe is mounted into a hidden 1x1 off-screen host
-- All playback controls flow through `YouTubePlaylistPlayer`
-- UI controls interact with radio state only (not embed chrome)
+You can swap playlist IDs without changing UI logic.
 
-This keeps the experience feeling like a radio instead of a video embed.
+## Keyboard shortcuts
 
-## Keyboard controls
-
-- `Space`: play/pause (power)
-- `ArrowLeft`: previous station
-- `ArrowRight`: next station
+- `Space`: play/pause
+- `ArrowLeft`: previous character/station
+- `ArrowRight`: next character/station
 - `ArrowUp`: volume up
 - `ArrowDown`: volume down
 - `M`: mute/unmute
-- `Home`: first station
-- `End`: last station
+- `Home`: first character/station
+- `End`: last character/station
+- `Enter`: activate focused character button
 
-Keyboard updates stay in sync with dial needle, knob visuals, station state, and playback state.
+Keyboard interactions update selection, metadata, and playback state in sync.
 
-## Media Session + web limitations
+## Media Session + browser limitations
 
-The app uses the Media Session API where available for:
-
+Dhuni uses Media Session API (where available) for:
 - play/pause action handlers
-- previous/next station action handlers
-- active station metadata
+- previous/next station handlers
+- station metadata updates
 
-Important web limitation:
+Web limitation (important):
+- Browsers do **not** expose reliable cross-browser interception of true OS/hardware volume keys to web apps.
+- In-app volume is controlled by the volume slider and keyboard arrows.
 
-- Browsers do **not** provide a reliable, cross-browser way for websites to intercept true OS/hardware volume keys.
-- App volume is controlled through the on-screen volume knob and keyboard arrows.
+## Autoplay behavior
 
-## Autoplay/browser behavior
-
-Modern browsers may block autoplay until a user gesture occurs.
+Browsers may require explicit user interaction before audio playback.
 
 Dhuni handles this by:
-
-- requiring direct user interaction for initial playback when needed
-- showing a tasteful retry message if playback is blocked
+- attempting playback on interaction
+- showing a graceful retry/error state when blocked
 
 ## GitHub Pages deployment
 
-This project is static-output only and works on GitHub Pages.
+The app is static-only and deploys via GitHub Pages Actions.
 
-`vite.config.ts` reads `VITE_BASE_PATH`:
+`vite.config.ts` uses:
 
 ```ts
 const base = process.env.VITE_BASE_PATH ?? '/';
 ```
 
-### Build for Pages
+For custom domains (for example `dhuni.net`), build with root base path (`/`).
 
-Use your repo name as base path:
+For project-subpath deploys (for example `https://user.github.io/repo/`), set:
 
 ```bash
-VITE_BASE_PATH=/your-repo-name/ npm run build
+VITE_BASE_PATH=/repo/ npm run build
 ```
 
-Then deploy the generated `dist/` folder to GitHub Pages.
+Current workflow deploys from `main` and uses `VITE_BASE_PATH=/`.
 
-Notes:
+## Optional future polish points
 
-- no backend required
-- no SSR required
-- no runtime rewrites required
-
-## Optional future additions
-
-You can add optional sound effects later (knob ticks, soft static, power click) by placing assets under `public/sfx/` and triggering them from `useRadioState.ts` interaction hooks.
+- add subtle station-specific ambient SFX hooks in `useRadioState.ts`
+- add alternate scene palettes (dawn / monsoon / midnight)
+- extend character sprites while keeping silhouettes simple

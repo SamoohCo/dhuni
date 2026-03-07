@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import { Radio } from './components/Radio';
+import { DhuniScene } from './components/DhuniScene';
+import { KeyboardLegend } from './components/KeyboardLegend';
+import { NowPlayingPanel } from './components/NowPlayingPanel';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useRadioState } from './hooks/useRadioState';
 
@@ -32,40 +34,42 @@ function App() {
   useKeyboardShortcuts(keyboardActions);
 
   return (
-    <main className="app" aria-label="Dhuni radio">
+    <main className="app" aria-label="Dhuni ambient listening scene">
       <div className="app__ambient" aria-hidden="true" />
-      <Radio
+
+      <header className="app__header">
+        <p className="app__mark">Dhuni</p>
+        <p className="app__line">A tiny digital campfire for Indian sound.</p>
+      </header>
+
+      <DhuniScene
         stations={radio.stations}
         stationIndex={radio.stationIndex}
-        lockedStationIndex={radio.lockedStationIndex}
-        currentStation={radio.currentStation}
-        tunePosition={radio.tunePosition}
-        volume={radio.volume}
-        isMuted={radio.isMuted}
         isPowered={radio.isPowered}
-        isConnecting={radio.isConnecting}
-        isSwitching={radio.isSwitching}
-        lockStrength={radio.lockStrength}
-        statusText={radio.statusText}
-        error={radio.error}
-        onTogglePower={radio.togglePower}
-        onTuneLive={radio.setTunePositionLive}
-        onTuneCommit={radio.commitTunePosition}
-        onPreviousStation={radio.previousStation}
-        onNextStation={radio.nextStation}
-        onFirstStation={radio.firstStation}
-        onLastStation={radio.lastStation}
-        onVolumeChange={radio.setVolumeLevel}
-        onVolumeIncrease={radio.volumeUp}
-        onVolumeDecrease={radio.volumeDown}
-        onToggleMute={radio.toggleMute}
+        isPlaying={radio.isPlaying}
+        isStationSwitching={radio.isStationSwitching}
+        fireEnergy={radio.fireEnergy}
+        onSelectStation={radio.selectStation}
+        onActivateStation={radio.activateStation}
       />
 
-      <p className="app__hint">
-        Space play/pause · ArrowLeft/ArrowRight tune · ArrowUp/ArrowDown volume · M mute · Home/End
-      </p>
+      <NowPlayingPanel
+        station={radio.currentStation}
+        statusText={radio.statusText}
+        isPowered={radio.isPowered}
+        isPlaying={radio.isPlaying}
+        isMuted={radio.isMuted}
+        volume={radio.volume}
+        isConnecting={radio.isConnecting}
+        error={radio.error}
+        onTogglePower={radio.togglePower}
+        onToggleMute={radio.toggleMute}
+        onVolumeChange={radio.setVolumeLevel}
+      />
 
-      {/* Hidden player host keeps the YouTube layer off-stage; controls stay radio-native. */}
+      <KeyboardLegend />
+
+      {/* Hidden YouTube player host keeps playback infrastructure off-stage. */}
       <div ref={radio.playerHostRef} className="youtube-host" aria-hidden="true" />
     </main>
   );

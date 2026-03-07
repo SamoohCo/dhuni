@@ -63,6 +63,14 @@ export function useKeyboardShortcuts(actions: KeyboardShortcutActions): void {
           event.preventDefault();
           actions.lastStation();
           break;
+        case 'Enter': {
+          const focused = document.activeElement;
+          if (focused instanceof HTMLButtonElement && focused.classList.contains('dhuni-character')) {
+            event.preventDefault();
+            focused.click();
+          }
+          break;
+        }
         default:
           if (event.key.toLowerCase() === 'm') {
             event.preventDefault();
