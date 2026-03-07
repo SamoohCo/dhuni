@@ -1,10 +1,20 @@
+export type Season = 'winter' | 'summer' | 'monsoon' | 'post-monsoon';
+
 export type CharacterType =
-  | 'seer'
-  | 'cinephile'
-  | 'monsoon-coder'
-  | 'raaga-scholar'
-  | 'archivist'
-  | 'night-listener';
+  | 'winter-listener'
+  | 'summer-vidushi'
+  | 'monsoon-writer'
+  | 'sharad-archivist';
+
+export interface StationPalette {
+  skyTop: string;
+  skyBottom: string;
+  fog: string;
+  ground: string;
+  ember: string;
+  accent: string;
+  hudGlass: string;
+}
 
 export interface Station {
   id: string;
@@ -12,92 +22,113 @@ export interface Station {
   tagline: string;
   playlistId: string;
   order: number;
-  characterType?: CharacterType;
-  mood?: string;
-  era?: string;
-  city?: string;
-  accent?: string;
-  shortDescription?: string;
+  season: Season;
+  mood: string;
+  tradition: string;
+  description: string;
+  spriteType: CharacterType;
+  environmentType: 'still-air' | 'heat-haze' | 'rain-haze' | 'clear-evening';
+  cameraShiftX: number;
+  cameraShiftY: number;
+  palette: StationPalette;
 }
 
 export const stations: Station[] = [
   {
-    id: 'raga-dawn',
-    name: 'Raga Dawn',
-    tagline: 'First light, tanpura, and unhurried breath.',
+    id: 'winter-dawn',
+    name: 'Winter Dawn',
+    tagline: 'Cool breath, tanpura drone, first blue light.',
     playlistId: 'PLnA3oaYvI6k6jYFfTjJ7fX9M2nPzC8qv2',
     order: 0,
-    characterType: 'seer',
-    mood: 'Meditative',
-    era: 'Classical',
-    city: 'Varanasi',
-    accent: '#f1c88f',
-    shortDescription: 'A quiet early riser listening before the city wakes.',
+    season: 'winter',
+    mood: 'Contemplative',
+    tradition: 'Hindustani Dawn',
+    description: 'A shawled listener in still air before sunrise.',
+    spriteType: 'winter-listener',
+    environmentType: 'still-air',
+    cameraShiftX: -1.5,
+    cameraShiftY: -0.8,
+    palette: {
+      skyTop: '#111b31',
+      skyBottom: '#202e49',
+      fog: 'rgba(181, 201, 227, 0.22)',
+      ground: '#2b2731',
+      ember: '#f6b571',
+      accent: '#d5c7a6',
+      hudGlass: 'rgba(19, 29, 46, 0.46)',
+    },
   },
   {
-    id: 'bombay-retro',
-    name: 'Bombay Retro',
-    tagline: 'Old cinema strings and rain on marine roads.',
+    id: 'summer-noon',
+    name: 'Summer Noon',
+    tagline: 'Bright discipline, veena lines, radiant heat.',
     playlistId: 'PL4fGSI1pDJn5hdb0wqV4Oe4IYQ5m7vxr4',
     order: 1,
-    characterType: 'cinephile',
-    mood: 'Golden',
-    era: '1950s-1970s',
-    city: 'Mumbai',
-    accent: '#e9a56c',
-    shortDescription: 'A city-night romantic carrying a pocket notebook of songs.',
+    season: 'summer',
+    mood: 'Luminous',
+    tradition: 'Carnatic Midday',
+    description: 'A precise listener holding rhythm in dry warm light.',
+    spriteType: 'summer-vidushi',
+    environmentType: 'heat-haze',
+    cameraShiftX: 1.2,
+    cameraShiftY: -0.6,
+    palette: {
+      skyTop: '#1a2034',
+      skyBottom: '#3b2f2d',
+      fog: 'rgba(244, 166, 94, 0.18)',
+      ground: '#44312f',
+      ember: '#ffb26b',
+      accent: '#f0b67f',
+      hudGlass: 'rgba(39, 26, 22, 0.42)',
+    },
   },
   {
     id: 'monsoon-instrumentals',
     name: 'Monsoon Instrumentals',
-    tagline: 'Cloud-light ragas and drifting instrumental rain.',
+    tagline: 'Rain haze, reflective strings, long listening.',
     playlistId: 'PLDcnymzs18LVyNfYQy6QfM6xG5jD4b9L7',
     order: 2,
-    characterType: 'monsoon-coder',
-    mood: 'Rainy',
-    era: 'Contemporary',
-    city: 'Kolkata',
-    accent: '#9dc8d4',
-    shortDescription: 'A soft-lit laptop listener writing through monsoon nights.',
+    season: 'monsoon',
+    mood: 'Reflective',
+    tradition: 'Instrumental Rain',
+    description: 'A night writer with umbrella and soft laptop glow.',
+    spriteType: 'monsoon-writer',
+    environmentType: 'rain-haze',
+    cameraShiftX: -0.8,
+    cameraShiftY: -0.2,
+    palette: {
+      skyTop: '#121f2f',
+      skyBottom: '#233b4b',
+      fog: 'rgba(136, 188, 212, 0.24)',
+      ground: '#25343e',
+      ember: '#f0a662',
+      accent: '#99c7d9',
+      hudGlass: 'rgba(16, 39, 52, 0.42)',
+    },
   },
   {
-    id: 'hindustani-evening',
-    name: 'Hindustani Evening',
-    tagline: 'Vilambit patience, drut release, dusk devotion.',
-    playlistId: 'PLRBp0Fe2GpgnIh0AiYKh7o7HnYAej-5ph',
-    order: 3,
-    characterType: 'raaga-scholar',
-    mood: 'Focused',
-    era: 'Concert',
-    city: 'Delhi',
-    accent: '#d9b48d',
-    shortDescription: 'A raga student listening with complete attention.',
-  },
-  {
-    id: 'air-archive',
-    name: 'AIR Archive',
-    tagline: 'Broadcast memory, static warmth, and public airwaves.',
+    id: 'sharad-archive',
+    name: 'Sharad Archive',
+    tagline: 'Clean evening air, AIR memory, mellow warmth.',
     playlistId: 'PL590L5WQmH8fJ54FqHf9h0xJk1Yw2D7Pp',
-    order: 4,
-    characterType: 'archivist',
+    order: 3,
+    season: 'post-monsoon',
     mood: 'Archival',
-    era: 'Broadcast',
-    city: 'All India Radio',
-    accent: '#b9af9b',
-    shortDescription: 'An archivist with headphones preserving broadcast history.',
-  },
-  {
-    id: 'midnight-tanpura',
-    name: 'Midnight Tanpura',
-    tagline: 'Deep-night drone and luminous stillness.',
-    playlistId: 'PLzCxunOM5WFJHh4X4x7B6Y6m2f8r8h2Yd',
-    order: 5,
-    characterType: 'night-listener',
-    mood: 'Nocturnal',
-    era: 'Ambient',
-    city: 'Bengaluru',
-    accent: '#b1a3df',
-    shortDescription: 'A midnight listener resting in long tanpura overtones.',
+    tradition: 'Broadcast Evening',
+    description: 'An archivist with notes and headphones in calm twilight.',
+    spriteType: 'sharad-archivist',
+    environmentType: 'clear-evening',
+    cameraShiftX: 1.4,
+    cameraShiftY: -0.4,
+    palette: {
+      skyTop: '#181f30',
+      skyBottom: '#2f3046',
+      fog: 'rgba(197, 185, 160, 0.2)',
+      ground: '#302a32',
+      ember: '#f3ab67',
+      accent: '#d4be98',
+      hudGlass: 'rgba(31, 28, 38, 0.42)',
+    },
   },
 ];
 

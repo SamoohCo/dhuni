@@ -1,20 +1,31 @@
 # Dhuni
 
-Dhuni is a static web app for ambient Indian internet radio, now presented as a calm pixel-art-inspired night scene centered around a sacred fire.
+Dhuni is a full-screen ambient listening world for Indian sound.
 
-The interface is a tiny digital campfire:
-- a central dhuni flame
-- 6 listeners gathered around it (each character maps to one playlist/station)
-- minimal controls for play/pause, mute, and volume
+The entire browser window is the interface:
+- a constant sacred pixel dhuni (fire) at center
+- 4 tiny pixel listener-characters (one per station/season)
+- atmospheric seasonal world transitions on station switch
+- ultra-minimal top HUD and bottom control dock
 
-No dashboard UI, no game systems, no visible YouTube chrome.
+No dashboard layout. No framed card scene. No visible YouTube player UI.
+
+## Core architecture (preserved)
+
+This refactor keeps the existing deployment and playback model:
+- static Vite build for GitHub Pages
+- YouTube playlist-backed stations
+- hidden YouTube Iframe API player wrapper
+- local config-driven station mapping
+- localStorage for station/volume/mute
+- Media Session integration where available
 
 ## Stack
 
 - Vite
 - React + TypeScript
-- Plain CSS (handcrafted scene styling)
-- YouTube Iframe Player API through a local wrapper abstraction
+- Plain CSS (custom scene + HUD system)
+- YouTube Iframe Player API via `src/lib/youtubePlayer.ts`
 
 ## Quick start
 
@@ -32,75 +43,86 @@ npm run preview
 
 ## Project structure
 
-- `src/data/stations.ts`: character/station config (single source of truth)
-- `src/hooks/useRadioState.ts`: playback + station selection state orchestration
-- `src/lib/youtubePlayer.ts`: hidden YouTube playlist player abstraction
-- `src/components/DhuniScene.tsx`: main ambient world scene
-- `src/components/CharacterSprite.tsx`: station character silhouettes
-- `src/components/NowPlayingPanel.tsx`: minimal metadata + controls strip
-- `src/hooks/useKeyboardShortcuts.ts`: global keyboard behaviors
-- `.github/workflows/deploy-pages.yml`: GitHub Pages build/deploy
+- `src/data/stations.ts`: station + character + season + palette config
+- `src/hooks/useRadioState.ts`: playback/station state orchestration
+- `src/hooks/useKeyboardShortcuts.ts`: keyboard handling
+- `src/components/DhuniScene.tsx`: full-screen world renderer
+- `src/components/FireSprite.tsx`: pixel fire sprite
+- `src/components/CharacterSprite.tsx`: pixel character sprites
+- `src/components/TopHud.tsx`: minimal top metadata overlay
+- `src/components/ControlDock.tsx`: minimal bottom control dock
+- `src/lib/youtubePlayer.ts`: hidden YouTube player abstraction
 
-## Character/station config
+## Station/character config
 
 Edit `src/data/stations.ts`.
 
-Each entry includes:
+Each station maps directly to one character and one world state.
+
+Fields include:
 - `id`
 - `name`
 - `tagline`
 - `playlistId`
-- `order`
-- optional: `characterType`, `mood`, `era`, `city`, `accent`, `shortDescription`
+- `season`
+- `mood`
+- `tradition`
+- `description`
+- `spriteType`
+- `environmentType`
+- `cameraShiftX`, `cameraShiftY`
+- `palette` (scene/HUD color system)
 
-Characters and playlists are the same thing conceptually:
-- one character = one station = one YouTube playlist
-
-## Playlist mapping model
-
-Dhuni keeps the same zero-cost architecture:
-- playlists are local config entries
-- selecting a character changes station
-- playback is loaded from that character's `playlistId`
-
-You can swap playlist IDs without changing UI logic.
+Current 4 seasonal worlds:
+- Winter
+- Summer
+- Monsoon
+- Post-monsoon
 
 ## Keyboard shortcuts
 
 - `Space`: play/pause
-- `ArrowLeft`: previous character/station
-- `ArrowRight`: next character/station
+- `ArrowLeft`: previous station
+- `ArrowRight`: next station
 - `ArrowUp`: volume up
 - `ArrowDown`: volume down
 - `M`: mute/unmute
-- `Home`: first character/station
-- `End`: last character/station
-- `Enter`: activate focused character button
+- `Home`: first station
+- `End`: last station
+- `Enter`: activate focused character
 
-Keyboard interactions update selection, metadata, and playback state in sync.
+Keyboard updates station selection, scene state, and playback state together.
+
+## Mobile behavior
+
+- full-screen world remains intact
+- characters remain tappable
+- top HUD is reduced for readability
+- dock condenses and keeps core controls accessible
+- no hover-only critical actions
 
 ## Media Session + browser limitations
 
-Dhuni uses Media Session API (where available) for:
-- play/pause action handlers
-- previous/next station handlers
-- station metadata updates
+Dhuni uses Media Session API where supported for:
+- play/pause actions
+- previous/next actions
+- station metadata
 
-Web limitation (important):
-- Browsers do **not** expose reliable cross-browser interception of true OS/hardware volume keys to web apps.
-- In-app volume is controlled by the volume slider and keyboard arrows.
+Web limitation:
+- browsers do **not** reliably expose true OS/hardware volume key interception to web apps.
+- in-app volume is controlled via dock slider and keyboard arrows.
 
 ## Autoplay behavior
 
-Browsers may require explicit user interaction before audio playback.
+Some browsers block autoplay until user interaction.
 
 Dhuni handles this by:
-- attempting playback on interaction
-- showing a graceful retry/error state when blocked
+- attempting playback on explicit interaction
+- showing a graceful error/retry status if blocked
 
 ## GitHub Pages deployment
 
-The app is static-only and deploys via GitHub Pages Actions.
+The app is static-only and GitHub Pages compatible.
 
 `vite.config.ts` uses:
 
@@ -108,18 +130,11 @@ The app is static-only and deploys via GitHub Pages Actions.
 const base = process.env.VITE_BASE_PATH ?? '/';
 ```
 
-For custom domains (for example `dhuni.net`), build with root base path (`/`).
-
-For project-subpath deploys (for example `https://user.github.io/repo/`), set:
+For custom domains (for example `dhuni.net`), use root base path (`/`).
+For project-subpath deploys, set:
 
 ```bash
 VITE_BASE_PATH=/repo/ npm run build
 ```
 
-Current workflow deploys from `main` and uses `VITE_BASE_PATH=/`.
-
-## Optional future polish points
-
-- add subtle station-specific ambient SFX hooks in `useRadioState.ts`
-- add alternate scene palettes (dawn / monsoon / midnight)
-- extend character sprites while keeping silhouettes simple
+Current workflow deploys from `main` with `VITE_BASE_PATH=/`.

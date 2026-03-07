@@ -65,7 +65,7 @@ export function useKeyboardShortcuts(actions: KeyboardShortcutActions): void {
           break;
         case 'Enter': {
           const focused = document.activeElement;
-          if (focused instanceof HTMLButtonElement && focused.classList.contains('dhuni-character')) {
+          if (focused instanceof HTMLButtonElement && focused.classList.contains('world-character')) {
             event.preventDefault();
             focused.click();
           }

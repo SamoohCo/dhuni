@@ -1,73 +1,33 @@
 :root {
-  --bg-deep: #0d1019;
-  --bg-mid: #121827;
-  --bg-soft: #1a2334;
-  --text-main: #f1e9d7;
-  --text-soft: #c8c0ae;
-  --accent-fire: #ef9c58;
-  --focus: #f9d49b;
+  --text-main: #efe8d8;
+  --text-soft: rgba(228, 220, 205, 0.76);
+  --focus: #f8d7a5;
+  --hud-glass: rgba(22, 31, 46, 0.42);
+  --hud-accent: #d6c19b;
   --ui-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
   --ui-sans: 'Avenir Next', 'Gill Sans', 'Trebuchet MS', sans-serif;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
 body {
+  margin: 0;
+  overflow: hidden;
   font-family: var(--ui-sans);
   color: var(--text-main);
-  min-height: 100svh;
-  background:
-    radial-gradient(1300px 650px at 50% 4%, rgba(236, 159, 92, 0.12), transparent 62%),
-    radial-gradient(900px 500px at 14% 100%, rgba(90, 120, 170, 0.14), transparent 70%),
-    linear-gradient(180deg, var(--bg-soft) 0%, var(--bg-mid) 48%, var(--bg-deep) 100%);
+  background: #101726;
 }
 
 .app {
   position: relative;
-  min-height: 100svh;
-  width: min(96vw, 1060px);
-  margin: 0 auto;
-  padding: clamp(1rem, 2vw, 1.75rem) clamp(0.85rem, 2.2vw, 1.5rem) 1.2rem;
-  display: grid;
-  align-content: center;
-  gap: clamp(0.78rem, 1.7vw, 1.08rem);
-}
-
-.app__ambient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 48%, rgba(252, 177, 101, 0.14), transparent 50%),
-    repeating-linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.01) 0,
-      rgba(255, 255, 255, 0.01) 1px,
-      transparent 1px,
-      transparent 21px
-    );
-}
-
-.app__header {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.35rem 0.75rem;
-}
-
-.app__mark {
-  font-family: var(--ui-serif);
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
-}
-
-.app__line {
-  color: var(--text-soft);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: clamp(0.56rem, 0.95vw, 0.68rem);
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
 }
 
 .youtube-host {
@@ -78,15 +38,4 @@ body {
   top: -1000px;
   opacity: 0;
   pointer-events: none;
-}
-
-@media (max-width: 720px) {
-  .app {
-    width: 100%;
-    padding: 0.88rem 0.68rem 0.9rem;
-  }
-
-  .app__header {
-    justify-content: flex-start;
-  }
 }

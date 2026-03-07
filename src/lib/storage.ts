@@ -9,7 +9,7 @@ export interface RadioPreferences {
 const defaultPreferences: RadioPreferences = {
   volume: 0.62,
   muted: false,
-  stationId: 'raga-dawn',
+  stationId: 'winter-dawn',
 };
 
 export function loadPreferences(): RadioPreferences {
