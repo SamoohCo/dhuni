@@ -1,0 +1,180 @@
+export type PlaybackState = 'idle' | 'loading' | 'playing' | 'paused' | 'error';
+
+interface YouTubePlayerEvents {
+  onStateChange?: (state: PlaybackState) => void;
+  onError?: (message: string) => void;
+  onReady?: () => void;
+}
+
+let apiPromise: Promise<typeof YT> | null = null;
+
+function loadYouTubeApi(): Promise<typeof YT> {
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('YouTube API requires a browser environment.'));
+  }
+
+  if (window.YT?.Player) {
+    return Promise.resolve(window.YT);
+  }
+
+  if (apiPromise) {
+    return apiPromise;
+  }
+
+  apiPromise = new Promise<typeof YT>((resolve, reject) => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[data-dhuni-youtube-api="true"]',
+    );
+
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://www.youtube.com/iframe_api';
+      script.async = true;
+      script.dataset.dhuniYoutubeApi = 'true';
+      script.onerror = () => reject(new Error('Unable to load YouTube API script.'));
+      document.head.append(script);
+    }
+
+    const previousReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      previousReady?.();
+      resolve(window.YT);
+    };
+
+    window.setTimeout(() => {
+      if (!window.YT?.Player) {
+        reject(new Error('YouTube API did not initialize in time.'));
+      }
+    }, 12000);
+  });
+
+  return apiPromise;
+}
+
+function mapState(stateCode: number): PlaybackState {
+  switch (stateCode) {
+    case window.YT.PlayerState.BUFFERING:
+    case window.YT.PlayerState.CUED:
+      return 'loading';
+    case window.YT.PlayerState.PLAYING:
+      return 'playing';
+    case window.YT.PlayerState.PAUSED:
+    case window.YT.PlayerState.ENDED:
+      return 'paused';
+    case window.YT.PlayerState.UNSTARTED:
+    default:
+      return 'idle';
+  }
+}
+
+function mapError(code: number): string {
+  switch (code) {
+    case 2:
+      return 'This station stream is unavailable right now.';
+    case 5:
+      return 'The browser could not decode this playlist item.';
+    case 100:
+      return 'This video has been removed from the playlist.';
+    case 101:
+    case 150:
+      return 'Playback is blocked by the owner for embedded players.';
+    default:
+      return 'There was a playback issue while loading this station.';
+  }
+}
+
+export class YouTubePlaylistPlayer {
+  private player: YT.Player | null = null;
+
+  private readonly events: YouTubePlayerEvents;
+
+  private currentPlaylistId: string | null = null;
+
+  constructor(events: YouTubePlayerEvents = {}) {
+    this.events = events;
+  }
+
+  async mount(hostElement: HTMLElement): Promise<void> {
+    const YT = await loadYouTubeApi();
+
+    if (this.player) {
+      return;
+    }
+
+    this.player = new YT.Player(hostElement, {
+      height: '1',
+      width: '1',
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        iv_load_policy: 3,
+        modestbranding: 1,
+        playsinline: 1,
+        rel: 0,
+      },
+      events: {
+        onReady: () => {
+          this.events.onReady?.();
+        },
+        onStateChange: (event) => {
+          this.events.onStateChange?.(mapState(event.data));
+        },
+        onError: (event) => {
+          this.events.onStateChange?.('error');
+          this.events.onError?.(mapError(event.data));
+        },
+      },
+    });
+  }
+
+  loadPlaylist(playlistId: string): void {
+    if (!this.player) {
+      return;
+    }
+
+    if (this.currentPlaylistId === playlistId) {
+      return;
+    }
+
+    this.currentPlaylistId = playlistId;
+    this.events.onStateChange?.('loading');
+    this.player.loadPlaylist({
+      list: playlistId,
+      listType: 'playlist',
+      index: 0,
+      startSeconds: 0,
+      suggestedQuality: 'small',
+    });
+  }
+
+  play(): void {
+    this.player?.playVideo();
+  }
+
+  pause(): void {
+    this.player?.pauseVideo();
+  }
+
+  setVolume(volume: number): void {
+    if (!this.player) {
+      return;
+    }
+
+    this.player.setVolume(Math.round(volume * 100));
+  }
+
+  mute(): void {
+    this.player?.mute();
+  }
+
+  unmute(): void {
+    this.player?.unMute();
+  }
+
+  destroy(): void {
+    this.player?.destroy();
+    this.player = null;
+  }
+}
