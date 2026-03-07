@@ -9,7 +9,7 @@ export interface RadioPreferences {
 const defaultPreferences: RadioPreferences = {
   volume: 0.62,
   muted: false,
-  stationId: 'winter-dawn',
+  stationId: 'vasanta-prabhat',
 };
 
 export function loadPreferences(): RadioPreferences {

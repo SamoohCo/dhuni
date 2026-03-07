@@ -480,12 +480,12 @@
 
 .world-characters__item {
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.94);
   transition: transform 620ms ease, filter 520ms ease;
 }
 
 .world-characters__item.is-active {
-  transform: translate(-50%, -53%);
+  transform: translate(-50%, -53%) scale(1);
   filter: saturate(1.1);
 }
 
@@ -631,17 +631,48 @@
   filter: drop-shadow(0 0 12px color-mix(in srgb, var(--character-accent) 58%, #f7d7aa 42%));
 }
 
-.character-sprite.is-winter-listener .character-sprite__torso {
+.character-sprite.is-vasanta-riser .character-sprite__torso {
+  background: color-mix(in srgb, #87aa8a 54%, #47545f 46%);
+}
+
+.character-sprite.is-vasanta-riser .character-sprite__drape {
+  opacity: 0.86;
+  background: color-mix(in srgb, #b0cc99 50%, #60706c 50%);
+  clip-path: polygon(8% 0, 100% 0, 80% 100%, 0 84%);
+}
+
+.character-sprite.is-vasanta-riser .character-sprite__hair {
+  left: 11px;
+  width: 18px;
+  height: 7px;
+}
+
+.character-sprite.is-vasanta-riser .character-sprite__prop {
+  width: 9px;
+  height: 9px;
+  left: 29px;
+  bottom: 22px;
+  background: rgba(160, 189, 124, 0.84);
+}
+
+.character-sprite.is-vasanta-riser .character-sprite__detail {
+  width: 10px;
+  left: 14px;
+  bottom: 35px;
+  background: rgba(214, 233, 192, 0.72);
+}
+
+.character-sprite.is-shishira-sadhu .character-sprite__torso {
   background: color-mix(in srgb, #97a6bf 54%, #495466 46%);
 }
 
-.character-sprite.is-winter-listener .character-sprite__drape {
+.character-sprite.is-shishira-sadhu .character-sprite__drape {
   opacity: 0.88;
   background: color-mix(in srgb, #c0c9d8 52%, #697992 48%);
   clip-path: polygon(0 0, 100% 0, 92% 42%, 75% 100%, 0 100%);
 }
 
-.character-sprite.is-winter-listener .character-sprite__prop {
+.character-sprite.is-shishira-sadhu .character-sprite__prop {
   width: 7px;
   height: 7px;
   border-radius: 1px;
@@ -650,28 +681,28 @@
   bottom: 22px;
 }
 
-.character-sprite.is-winter-listener .character-sprite__detail {
+.character-sprite.is-shishira-sadhu .character-sprite__detail {
   width: 6px;
   height: 3px;
   background: rgba(227, 217, 198, 0.62);
 }
 
-.character-sprite.is-summer-vidushi .character-sprite__torso {
+.character-sprite.is-grishma-vidushi .character-sprite__torso {
   background: color-mix(in srgb, #d78e5d 56%, #5e4d52 44%);
 }
 
-.character-sprite.is-summer-vidushi .character-sprite__drape {
+.character-sprite.is-grishma-vidushi .character-sprite__drape {
   opacity: 0.9;
   background: color-mix(in srgb, #f0ba7f 58%, #c1704e 42%);
   clip-path: polygon(0 0, 86% 0, 100% 29%, 75% 100%, 8% 100%);
 }
 
-.character-sprite.is-summer-vidushi .character-sprite__arm--left {
+.character-sprite.is-grishma-vidushi .character-sprite__arm--left {
   height: 9px;
   bottom: 27px;
 }
 
-.character-sprite.is-summer-vidushi .character-sprite__prop {
+.character-sprite.is-grishma-vidushi .character-sprite__prop {
   width: 5px;
   height: 15px;
   left: 31px;
@@ -679,28 +710,28 @@
   background: rgba(220, 166, 110, 0.84);
 }
 
-.character-sprite.is-summer-vidushi .character-sprite__detail {
+.character-sprite.is-grishma-vidushi .character-sprite__detail {
   left: 18px;
   width: 2px;
   height: 2px;
   background: rgba(250, 202, 142, 0.78);
 }
 
-.character-sprite.is-monsoon-writer .character-sprite__torso {
+.character-sprite.is-varsha-listener .character-sprite__torso {
   background: color-mix(in srgb, #7daebf 52%, #445061 48%);
 }
 
-.character-sprite.is-monsoon-writer .character-sprite__drape {
+.character-sprite.is-varsha-listener .character-sprite__drape {
   opacity: 0.82;
   background: color-mix(in srgb, #7aa2bb 56%, #496478 44%);
 }
 
-.character-sprite.is-monsoon-writer .character-sprite__hair {
+.character-sprite.is-varsha-listener .character-sprite__hair {
   width: 18px;
   left: 11px;
 }
 
-.character-sprite.is-monsoon-writer .character-sprite__prop {
+.character-sprite.is-varsha-listener .character-sprite__prop {
   width: 12px;
   height: 7px;
   left: 27px;
@@ -708,7 +739,7 @@
   background: rgba(145, 201, 222, 0.86);
 }
 
-.character-sprite.is-monsoon-writer .character-sprite__detail {
+.character-sprite.is-varsha-listener .character-sprite__detail {
   width: 12px;
   height: 3px;
   left: 14px;
@@ -739,6 +770,35 @@
   left: 12px;
   bottom: 49px;
   background: rgba(198, 194, 185, 0.76);
+}
+
+.character-sprite.is-hemanta-poet .character-sprite__torso {
+  background: color-mix(in srgb, #9d8069 56%, #4d4958 44%);
+}
+
+.character-sprite.is-hemanta-poet .character-sprite__drape {
+  opacity: 0.82;
+  background: color-mix(in srgb, #c3a07f 50%, #6a5a63 50%);
+  clip-path: polygon(0 0, 100% 0, 88% 33%, 68% 100%, 4% 100%);
+}
+
+.character-sprite.is-hemanta-poet .character-sprite__hair {
+  height: 7px;
+}
+
+.character-sprite.is-hemanta-poet .character-sprite__prop {
+  width: 11px;
+  height: 8px;
+  left: 27px;
+  bottom: 21px;
+  background: rgba(187, 169, 144, 0.82);
+}
+
+.character-sprite.is-hemanta-poet .character-sprite__detail {
+  width: 9px;
+  left: 15px;
+  bottom: 33px;
+  background: rgba(224, 201, 170, 0.72);
 }
 
 .landscape__weather {
@@ -960,111 +1020,167 @@
   opacity: calc(0.42 + var(--fire-energy) * 0.4);
 }
 
-.world--winter .landscape__horizon--far .ridge {
-  background: color-mix(in srgb, var(--horizon-far) 84%, #61779a 16%);
+.world--vasanta .landscape__atmosphere {
+  background:
+    radial-gradient(1100px 560px at 50% 54%, color-mix(in srgb, var(--fog) 88%, #d8eac3 12%), transparent 70%),
+    radial-gradient(820px 320px at 24% 42%, rgba(218, 240, 192, 0.08), transparent 72%);
 }
 
-.world--winter .landscape__cloudbank .cloud {
-  opacity: 0.45;
-  transform: translateY(-4px);
+.world--vasanta .landscape__cloudbank .cloud {
+  opacity: 0.32;
+  transform: translateY(-2px);
 }
 
-.world--winter .weather {
+.world--vasanta .landscape__moisture {
+  opacity: 0.2;
+}
+
+.world--vasanta .weather {
   width: 4px;
   height: 4px;
   border-radius: 1px;
-  background: rgba(218, 232, 255, 0.8);
-  animation: winter-drift 8s ease-in-out infinite;
+  background: rgba(196, 226, 165, 0.72);
+  animation: vasanta-pollen 6.2s ease-in-out infinite;
 }
 
-.world--summer .landscape__atmosphere {
+.world--grishma .landscape__atmosphere {
   background:
     radial-gradient(1100px 560px at 50% 56%, color-mix(in srgb, var(--fog) 85%, #f4b277 15%), transparent 68%),
     radial-gradient(900px 360px at 25% 42%, rgba(255, 223, 181, 0.08), transparent 70%);
 }
 
-.world--summer .landscape__cloudbank .cloud {
+.world--grishma .landscape__cloudbank .cloud {
   opacity: 0.16;
   filter: blur(3px);
 }
 
-.world--summer .landscape__horizon--far .ridge--a {
+.world--grishma .landscape__horizon--far .ridge--a {
   clip-path: polygon(0 100%, 0 64%, 14% 59%, 28% 61%, 46% 53%, 62% 57%, 80% 52%, 100% 58%, 100% 100%);
 }
 
-.world--summer .landscape__horizon--far .ridge--c {
+.world--grishma .landscape__horizon--far .ridge--c {
   clip-path: polygon(0 100%, 0 62%, 18% 58%, 38% 61%, 56% 54%, 74% 57%, 100% 55%, 100% 100%);
 }
 
-.world--summer .landscape__terrain {
+.world--grishma .landscape__terrain {
   clip-path: polygon(0 36%, 9% 34%, 18% 37%, 29% 34%, 42% 38%, 54% 34%, 67% 39%, 80% 34%, 91% 37%, 100% 35%, 100% 100%, 0 100%);
 }
 
-.world--summer .weather {
+.world--grishma .weather {
   width: 16px;
   height: 2px;
   background: rgba(255, 198, 125, 0.42);
-  animation: summer-shimmer 3.8s ease-in-out infinite;
+  animation: grishma-shimmer 3.8s ease-in-out infinite;
 }
 
-.world--monsoon .landscape__horizon--far .ridge {
+.world--varsha .landscape__horizon--far .ridge {
   background: color-mix(in srgb, var(--horizon-far) 80%, #2f4d63 20%);
 }
 
-.world--monsoon .landscape__horizon--far .ridge--b {
+.world--varsha .landscape__horizon--far .ridge--b {
   height: 31%;
   clip-path: polygon(0 100%, 0 70%, 11% 61%, 24% 66%, 40% 53%, 54% 60%, 70% 49%, 86% 57%, 100% 52%, 100% 100%);
 }
 
-.world--monsoon .landscape__horizon--mid .ridge--e {
+.world--varsha .landscape__horizon--mid .ridge--e {
   height: 25%;
 }
 
-.world--monsoon .landscape__atmosphere {
+.world--varsha .landscape__atmosphere {
   opacity: calc(0.55 + var(--fire-energy) * 0.2);
 }
 
-.world--monsoon .landscape__cloudbank .cloud {
+.world--varsha .landscape__cloudbank .cloud {
   opacity: 0.62;
   background: linear-gradient(180deg, rgba(108, 130, 149, 0.38), rgba(43, 59, 74, 0.12));
   transform: translateY(6px);
 }
 
-.world--monsoon .landscape__moisture {
+.world--varsha .landscape__moisture {
   opacity: 0.56;
 }
 
-.world--monsoon .weather {
+.world--varsha .weather {
   width: 2px;
   height: 18px;
   border-radius: 0;
   background: rgba(170, 216, 238, 0.5);
-  animation: monsoon-rain 1.7s linear infinite;
+  animation: varsha-rain 1.7s linear infinite;
 }
 
-.world--post-monsoon .weather {
+.world--sharad .weather {
   width: 5px;
   height: 5px;
   border-radius: 2px;
   background: rgba(241, 224, 182, 0.72);
-  animation: postmonsoon-flicker 4.1s ease-in-out infinite;
+  animation: sharad-flicker 4.1s ease-in-out infinite;
 }
 
-.world--post-monsoon .landscape__cloudbank .cloud {
+.world--sharad .landscape__cloudbank .cloud {
   opacity: 0.3;
   transform: translateY(-2px);
 }
 
-.world--post-monsoon .landscape__moisture {
+.world--sharad .landscape__moisture {
   opacity: 0.28;
 }
 
-.world--post-monsoon .landscape__horizon--far .ridge {
+.world--sharad .landscape__horizon--far .ridge {
   background: color-mix(in srgb, var(--horizon-far) 76%, #4f5f4a 24%);
 }
 
-.world--post-monsoon .landscape__horizon--mid .ridge {
+.world--sharad .landscape__horizon--mid .ridge {
   background: color-mix(in srgb, var(--horizon-mid) 74%, #4a5b47 26%);
+}
+
+.world--hemanta .landscape__horizon--far .ridge {
+  background: color-mix(in srgb, var(--horizon-far) 78%, #5a5965 22%);
+}
+
+.world--hemanta .landscape__horizon--mid .ridge {
+  background: color-mix(in srgb, var(--horizon-mid) 74%, #52505c 26%);
+}
+
+.world--hemanta .landscape__atmosphere {
+  opacity: calc(0.52 + var(--fire-energy) * 0.22);
+  background:
+    radial-gradient(1000px 520px at 50% 56%, color-mix(in srgb, var(--fog) 88%, #cfbfad 12%), transparent 70%),
+    radial-gradient(860px 320px at 20% 40%, rgba(225, 210, 186, 0.08), transparent 72%);
+}
+
+.world--hemanta .landscape__cloudbank .cloud {
+  opacity: 0.48;
+  filter: blur(2.8px);
+  transform: translateY(2px);
+}
+
+.world--hemanta .landscape__moisture {
+  opacity: 0.35;
+}
+
+.world--hemanta .weather {
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(218, 203, 180, 0.44);
+  animation: hemanta-drift 4.8s ease-in-out infinite;
+}
+
+.world--shishira .landscape__horizon--far .ridge {
+  background: color-mix(in srgb, var(--horizon-far) 84%, #61779a 16%);
+}
+
+.world--shishira .landscape__cloudbank .cloud {
+  opacity: 0.45;
+  transform: translateY(-4px);
+}
+
+.world--shishira .weather {
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: rgba(218, 232, 255, 0.8);
+  animation: shishira-drift 8s ease-in-out infinite;
 }
 
 @keyframes fire-aura {
@@ -1136,7 +1252,21 @@
   }
 }
 
-@keyframes winter-drift {
+@keyframes vasanta-pollen {
+  0% {
+    transform: translate(-6px, -4px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(14px, 16px);
+    opacity: 0;
+  }
+}
+
+@keyframes shishira-drift {
   0%,
   100% {
     transform: translateY(0);
@@ -1148,7 +1278,7 @@
   }
 }
 
-@keyframes summer-shimmer {
+@keyframes grishma-shimmer {
   0%,
   100% {
     transform: translateX(0) scaleX(1);
@@ -1158,7 +1288,7 @@
   }
 }
 
-@keyframes monsoon-rain {
+@keyframes varsha-rain {
   0% {
     transform: translateY(-40px);
     opacity: 0;
@@ -1172,7 +1302,7 @@
   }
 }
 
-@keyframes postmonsoon-flicker {
+@keyframes sharad-flicker {
   0%,
   100% {
     opacity: 0.22;
@@ -1182,13 +1312,29 @@
   }
 }
 
+@keyframes hemanta-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.22;
+  }
+  50% {
+    transform: translateX(10px);
+    opacity: 0.65;
+  }
+}
+
 @media (max-width: 920px) {
   .world__fire-anchor {
     transform: translate(-50%, -50%) scale(0.92);
   }
 
   .world-characters__item {
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+
+  .world-characters__item.is-active {
+    transform: translate(-50%, -53%) scale(0.94);
   }
 
   .control-dock {
@@ -1218,7 +1364,11 @@
   }
 
   .world-characters__item {
-    transform: translate(-50%, -50%) scale(0.88);
+    transform: translate(-50%, -50%) scale(0.78);
+  }
+
+  .world-characters__item.is-active {
+    transform: translate(-50%, -53%) scale(0.83);
   }
 
   .control-dock {

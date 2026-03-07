@@ -1,10 +1,12 @@
-export type Season = 'winter' | 'summer' | 'monsoon' | 'post-monsoon';
+export type Season = 'vasanta' | 'grishma' | 'varsha' | 'sharad' | 'hemanta' | 'shishira';
 
 export type CharacterType =
-  | 'winter-listener'
-  | 'summer-vidushi'
-  | 'monsoon-writer'
-  | 'sharad-archivist';
+  | 'vasanta-riser'
+  | 'grishma-vidushi'
+  | 'varsha-listener'
+  | 'sharad-archivist'
+  | 'hemanta-poet'
+  | 'shishira-sadhu';
 
 export interface StationPalette {
   skyTop: string;
@@ -30,47 +32,55 @@ export interface Station {
   tradition: string;
   description: string;
   spriteType: CharacterType;
-  environmentType: 'still-air' | 'heat-haze' | 'rain-haze' | 'clear-evening';
+  environmentType:
+    | 'bloom-air'
+    | 'heat-haze'
+    | 'rain-haze'
+    | 'clear-evening'
+    | 'mist-evening'
+    | 'winter-stillness';
   palette: StationPalette;
 }
 
 export const stations: Station[] = [
   {
-    id: 'winter-dawn',
-    name: 'Winter Dawn',
-    tagline: 'Cool breath, tanpura drone, first blue light.',
-    playlistId: 'PLnA3oaYvI6k6jYFfTjJ7fX9M2nPzC8qv2',
+    id: 'vasanta-prabhat',
+    name: 'Vasanta Prabhat',
+    tagline: 'Dew on strings, the first raga of a waking world.',
+    playlistId: 'TODO_VASANTA_PLAYLIST_ID',
     order: 0,
-    season: 'winter',
-    mood: 'Contemplative',
-    tradition: 'Hindustani Dawn',
-    description: 'A shawled listener in still air before sunrise.',
-    spriteType: 'winter-listener',
-    environmentType: 'still-air',
+    season: 'vasanta',
+    mood: 'Awakening',
+    tradition: 'Hindustani morning ragas - Bhairav, Todi, Basant',
+    description:
+      'The threshold between stillness and movement: sarod, bansuri, and dawn ragas for a gentle beginning.',
+    spriteType: 'vasanta-riser',
+    environmentType: 'bloom-air',
     palette: {
-      skyTop: '#0f1a2f',
-      skyBottom: '#1f3150',
-      horizonFar: '#2d3f63',
-      horizonMid: '#25334d',
-      terrain: '#2a2934',
-      fog: 'rgba(172, 197, 226, 0.23)',
-      ember: '#f4b06d',
-      firelight: 'rgba(240, 159, 82, 0.34)',
-      accent: '#d6c7a7',
-      hudGlass: 'rgba(16, 28, 44, 0.36)',
+      skyTop: '#121f34',
+      skyBottom: '#314766',
+      horizonFar: '#3f5575',
+      horizonMid: '#324662',
+      terrain: '#2d3442',
+      fog: 'rgba(178, 215, 194, 0.22)',
+      ember: '#f3b16f',
+      firelight: 'rgba(243, 170, 96, 0.34)',
+      accent: '#bdd9b8',
+      hudGlass: 'rgba(17, 34, 50, 0.34)',
     },
   },
   {
-    id: 'summer-noon',
-    name: 'Summer Noon',
-    tagline: 'Bright discipline, veena lines, radiant heat.',
-    playlistId: 'PL4fGSI1pDJn5hdb0wqV4Oe4IYQ5m7vxr4',
+    id: 'grishma-dopahar',
+    name: 'Grishma Dopahar',
+    tagline: 'A still afternoon. The veena holds the heat.',
+    playlistId: 'TODO_GRISHMA_PLAYLIST_ID',
     order: 1,
-    season: 'summer',
-    mood: 'Luminous',
-    tradition: 'Carnatic Midday',
-    description: 'A precise listener holding rhythm in dry warm light.',
-    spriteType: 'summer-vidushi',
+    season: 'grishma',
+    mood: 'Luminous stillness',
+    tradition: 'Carnatic afternoon ragas - Charukesi, Hamsadhwani, Kalyani',
+    description:
+      'Courtyard heat and focused calm: veena and violin lines for unhurried midday listening.',
+    spriteType: 'grishma-vidushi',
     environmentType: 'heat-haze',
     palette: {
       skyTop: '#1c2338',
@@ -86,16 +96,17 @@ export const stations: Station[] = [
     },
   },
   {
-    id: 'monsoon-instrumentals',
-    name: 'Monsoon Instrumentals',
-    tagline: 'Rain haze, reflective strings, long listening.',
-    playlistId: 'PLDcnymzs18LVyNfYQy6QfM6xG5jD4b9L7',
+    id: 'varsha-raatri',
+    name: 'Varsha Raatri',
+    tagline: 'Rain on a tin roof. The raga opens.',
+    playlistId: 'TODO_VARSHA_PLAYLIST_ID',
     order: 2,
-    season: 'monsoon',
-    mood: 'Reflective',
-    tradition: 'Instrumental Rain',
-    description: 'A night writer with umbrella and soft laptop glow.',
-    spriteType: 'monsoon-writer',
+    season: 'varsha',
+    mood: 'Longing',
+    tradition: 'Hindustani rain ragas - Miyan ki Malhar, Des, Desh',
+    description:
+      'Monsoon-night listening shaped by Malhar and bowed strings, with tabla moving like distant thunder.',
+    spriteType: 'varsha-listener',
     environmentType: 'rain-haze',
     palette: {
       skyTop: '#122031',
@@ -111,15 +122,16 @@ export const stations: Station[] = [
     },
   },
   {
-    id: 'sharad-archive',
-    name: 'Sharad Archive',
-    tagline: 'Clean evening air, AIR memory, mellow warmth.',
-    playlistId: 'PL590L5WQmH8fJ54FqHf9h0xJk1Yw2D7Pp',
+    id: 'sharad-sandhya',
+    name: 'Sharad Sandhya',
+    tagline: 'The light turns gold. Strings trace the evening.',
+    playlistId: 'TODO_SHARAD_PLAYLIST_ID',
     order: 3,
-    season: 'post-monsoon',
-    mood: 'Archival',
-    tradition: 'Broadcast Evening',
-    description: 'An archivist with notes and headphones in calm twilight.',
+    season: 'sharad',
+    mood: 'Contemplative clarity',
+    tradition: 'Semi-classical and instrumental - thumri, dadra, light classical',
+    description:
+      'Amber dusk with thumri, dadra, sitar, and santoor for the hour when day softens into evening.',
     spriteType: 'sharad-archivist',
     environmentType: 'clear-evening',
     palette: {
@@ -133,6 +145,58 @@ export const stations: Station[] = [
       firelight: 'rgba(240, 155, 87, 0.32)',
       accent: '#d4be9a',
       hudGlass: 'rgba(28, 27, 38, 0.34)',
+    },
+  },
+  {
+    id: 'hemanta-geet',
+    name: 'Hemanta Geet',
+    tagline: 'Fog at the window. The voice carries further at night.',
+    playlistId: 'TODO_HEMANTA_PLAYLIST_ID',
+    order: 4,
+    season: 'hemanta',
+    mood: 'Intimate warmth',
+    tradition: 'Rabindra Sangeet and Bengali classical - Hemanta and Tagore season',
+    description:
+      'Misty evenings and woodsmoke tempo, with Rabindra Sangeet and warm Bengali classical textures.',
+    spriteType: 'hemanta-poet',
+    environmentType: 'mist-evening',
+    palette: {
+      skyTop: '#171e34',
+      skyBottom: '#3a3a53',
+      horizonFar: '#484864',
+      horizonMid: '#41405a',
+      terrain: '#393340',
+      fog: 'rgba(188, 181, 168, 0.24)',
+      ember: '#efaa6d',
+      firelight: 'rgba(236, 156, 88, 0.33)',
+      accent: '#d6c2a8',
+      hudGlass: 'rgba(30, 28, 40, 0.35)',
+    },
+  },
+  {
+    id: 'shishira-prahar',
+    name: 'Shishira Prahar',
+    tagline: 'Before dawn. A dhrupad opens into the cold.',
+    playlistId: 'TODO_SHISHIRA_PLAYLIST_ID',
+    order: 5,
+    season: 'shishira',
+    mood: 'Austere devotion',
+    tradition: 'Dhrupad - the oldest living form of Indian classical music',
+    description:
+      'Deep winter discipline anchored in dhrupad, tanpura drone, and pre-dawn stillness.',
+    spriteType: 'shishira-sadhu',
+    environmentType: 'winter-stillness',
+    palette: {
+      skyTop: '#0c172c',
+      skyBottom: '#1b2d49',
+      horizonFar: '#293d5f',
+      horizonMid: '#24354f',
+      terrain: '#292b36',
+      fog: 'rgba(170, 193, 221, 0.21)',
+      ember: '#f2ab6b',
+      firelight: 'rgba(238, 156, 86, 0.3)',
+      accent: '#c6d0df',
+      hudGlass: 'rgba(14, 26, 42, 0.37)',
     },
   },
 ];

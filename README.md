@@ -6,8 +6,8 @@ Built by [Samooh](https://samooh.com).
 The browser window itself is the world:
 - layered atmosphere and horizon depth
 - one constant central dhuni fire (always burning)
-- four pixel listener-characters gathered around the fire
-- seasonal world-state shifts per station
+- six pixel listener-characters gathered around the fire
+- six ritu world-state shifts per station
 - minimal floating overlays for metadata and controls
 
 No framed stage. No dashboard shell. No visible YouTube UI.
@@ -73,10 +73,12 @@ If you want to update stations quickly, collect this per season:
 - optional: `mood`, `tradition`, `description`
 
 Current seasonal worlds:
-- Winter
-- Summer
-- Monsoon
-- Post-monsoon
+- Vasanta
+- Grishma
+- Varsha
+- Sharad
+- Hemanta
+- Shishira
 
 ## Keyboard shortcuts
 
@@ -95,7 +97,7 @@ Selection, scene state, and playback stay synchronized.
 ## Mobile behavior
 
 - full-screen world remains intact
-- all 4 characters remain visible and tappable
+- all 6 characters remain visible and tappable
 - top HUD condenses
 - control dock stays minimal and reachable
 - interaction does not depend on hover
