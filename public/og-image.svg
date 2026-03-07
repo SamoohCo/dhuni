@@ -19,6 +19,16 @@
       <stop offset="52%" stop-color="#f3be83" />
       <stop offset="100%" stop-color="#d67d50" />
     </linearGradient>
+    <style>
+      .og-title {
+        font-family: "PT Serif", "Iowan Old Style", "Times New Roman", serif;
+        letter-spacing: 6px;
+      }
+      .og-credit {
+        font-family: "Inconsolata", "SFMono-Regular", Menlo, Consolas, monospace;
+        letter-spacing: 2px;
+      }
+    </style>
   </defs>
 
   <rect width="1200" height="630" fill="url(#sky)" />
@@ -40,7 +50,6 @@
     <rect x="874" y="432" width="18" height="28" />
   </g>
 
-  <text x="600" y="128" text-anchor="middle" fill="#f2e9d9" font-size="56" font-family="Iowan Old Style, Palatino, serif" letter-spacing="10">DHUNI</text>
-  <text x="600" y="175" text-anchor="middle" fill="#d5c5ad" font-size="24" font-family="Avenir Next, Trebuchet MS, sans-serif" letter-spacing="3">A SACRED DIGITAL CAMPFIRE FOR INDIAN SOUND</text>
-  <text x="600" y="553" text-anchor="middle" fill="#c8b89f" font-size="21" font-family="Avenir Next, Trebuchet MS, sans-serif" letter-spacing="2">HANDCRAFTED BY SAMOOH</text>
+  <text x="600" y="128" text-anchor="middle" fill="#f2e9d9" font-size="60" class="og-title">DHUNI</text>
+  <text x="600" y="553" text-anchor="middle" fill="#c8b89f" font-size="24" class="og-credit">BY SAMOOH</text>
 </svg>
