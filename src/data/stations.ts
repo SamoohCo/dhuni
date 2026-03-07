@@ -26,6 +26,7 @@ export interface Station {
   name: string;
   tagline: string;
   playlistId: string;
+  startIndex?: number;
   order: number;
   season: Season;
   mood: string;
@@ -48,6 +49,7 @@ export const stations: Station[] = [
     name: 'Vasanta Prabhat',
     tagline: 'Dew on strings, the first raga of a waking world.',
     playlistId: 'PLuCF5Yy_LGvCyIx0qdt6nrqUdF_bgUyoA',
+    startIndex: 0,
     order: 0,
     season: 'vasanta',
     mood: 'Awakening',
@@ -74,6 +76,7 @@ export const stations: Station[] = [
     name: 'Grishma Dopahar',
     tagline: 'A still afternoon. The veena holds the heat.',
     playlistId: 'PLuCF5Yy_LGvASItZm3vrjzgGsvy-b4HtY',
+    startIndex: 4,
     order: 1,
     season: 'grishma',
     mood: 'Luminous stillness',
@@ -100,6 +103,7 @@ export const stations: Station[] = [
     name: 'Varsha Raatri',
     tagline: 'Rain on a tin roof. The raga opens.',
     playlistId: 'PLuCF5Yy_LGvCq2wLzl9r-uWFlSet6u_Kc',
+    startIndex: 8,
     order: 2,
     season: 'varsha',
     mood: 'Longing',
@@ -126,6 +130,7 @@ export const stations: Station[] = [
     name: 'Sharad Sandhya',
     tagline: 'The light turns gold. Strings trace the evening.',
     playlistId: 'PLuCF5Yy_LGvDHDjv6j1OiemnIHaafsn-_',
+    startIndex: 12,
     order: 3,
     season: 'sharad',
     mood: 'Contemplative clarity',
@@ -152,6 +157,7 @@ export const stations: Station[] = [
     name: 'Hemanta Geet',
     tagline: 'Fog at the window. The voice carries further at night.',
     playlistId: 'PLuCF5Yy_LGvAHBgceSfh5QJdYXKcqytq1',
+    startIndex: 16,
     order: 4,
     season: 'hemanta',
     mood: 'Intimate warmth',
@@ -178,6 +184,7 @@ export const stations: Station[] = [
     name: 'Shishira Prahar',
     tagline: 'Before dawn. A dhrupad opens into the cold.',
     playlistId: 'PLuCF5Yy_LGvBCKbuC0P_UWD5qk8whKRhr',
+    startIndex: 20,
     order: 5,
     season: 'shishira',
     mood: 'Austere devotion',

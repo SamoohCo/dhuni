@@ -285,7 +285,10 @@ export function useRadioState() {
           return;
         }
 
-        player.loadPlaylist(currentStationRef.current.playlistId);
+        player.loadPlaylist(currentStationRef.current.playlistId, {
+          startIndex: currentStationRef.current.startIndex ?? 0,
+          force: true,
+        });
         player.setVolume(volumeRef.current);
 
         if (isMutedRef.current || volumeRef.current === 0) {
@@ -321,7 +324,10 @@ export function useRadioState() {
       return;
     }
 
-    playerRef.current.loadPlaylist(currentStation.playlistId);
+    playerRef.current.loadPlaylist(currentStation.playlistId, {
+      startIndex: currentStation.startIndex ?? 0,
+      force: true,
+    });
 
     if (isPoweredRef.current) {
       setIsConnecting(true);

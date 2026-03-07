@@ -89,6 +89,7 @@ export class YouTubePlaylistPlayer {
   private readonly events: YouTubePlayerEvents;
 
   private currentPlaylistId: string | null = null;
+  private currentStartIndex = 0;
 
   constructor(events: YouTubePlayerEvents = {}) {
     this.events = events;
@@ -129,21 +130,39 @@ export class YouTubePlaylistPlayer {
     });
   }
 
-  loadPlaylist(playlistId: string): void {
+  loadPlaylist(
+    playlistId: string,
+    options: { startIndex?: number; force?: boolean } = {},
+  ): void {
     if (!this.player) {
       return;
     }
 
-    if (this.currentPlaylistId === playlistId) {
+    const startIndex = Math.max(0, Math.floor(options.startIndex ?? 0));
+    const force = options.force ?? false;
+
+    if (
+      !force &&
+      this.currentPlaylistId === playlistId &&
+      this.currentStartIndex === startIndex
+    ) {
       return;
     }
 
     this.currentPlaylistId = playlistId;
+    this.currentStartIndex = startIndex;
     this.events.onStateChange?.('loading');
+
+    try {
+      this.player.stopVideo();
+    } catch {
+      // Ignore edge cases where stopVideo is not yet available.
+    }
+
     this.player.loadPlaylist({
       list: playlistId,
       listType: 'playlist',
-      index: 0,
+      index: startIndex,
       startSeconds: 0,
       suggestedQuality: 'small',
     });
