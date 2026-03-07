@@ -17,12 +17,12 @@ interface DhuniSceneProps {
 }
 
 const CHARACTER_POSITIONS = [
-  { x: 20, y: 69 },
-  { x: 31, y: 62 },
-  { x: 42, y: 57 },
-  { x: 58, y: 57 },
-  { x: 69, y: 62 },
-  { x: 80, y: 69 },
+  { x: 36, y: 68, scale: 1 },
+  { x: 35, y: 61, scale: 0.95 },
+  { x: 44, y: 56, scale: 0.9 },
+  { x: 56, y: 56, scale: 0.9 },
+  { x: 65, y: 61, scale: 0.95 },
+  { x: 64, y: 68, scale: 1 },
 ];
 
 export function DhuniScene({
@@ -84,7 +84,14 @@ export function DhuniScene({
               <li
                 key={station.id}
                 className={`world-characters__item ${isActive ? 'is-active' : ''}`}
-                style={{ left: `${position.x}%`, top: `${position.y}%` }}
+                style={
+                  {
+                    left: `${position.x}%`,
+                    top: `${position.y}%`,
+                    '--char-scale': position.scale.toFixed(2),
+                    zIndex: Math.round(position.y * 10),
+                  } as CSSProperties
+                }
               >
                 <button
                   ref={(element) => {
