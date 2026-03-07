@@ -249,7 +249,7 @@
 .world__fire-anchor {
   z-index: 8;
   left: 50%;
-  top: 59%;
+  top: 60%;
   width: 260px;
   height: 250px;
   transform: translate(-50%, -50%);
@@ -486,7 +486,7 @@
 }
 
 .world-characters__item.is-active {
-  transform: translate(-50%, -53%) scale(calc(var(--char-scale) + 0.06));
+  transform: translate(-50%, -51%) scale(calc(var(--char-scale) + 0.06));
   filter: saturate(1.1);
 }
 
@@ -1249,7 +1249,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-1.5px);
+    transform: translateY(-1px);
   }
 }
 
@@ -1335,7 +1335,7 @@
   }
 
   .world-characters__item.is-active {
-    transform: translate(-50%, -53%) scale(calc((var(--char-scale) + 0.06) * 0.92));
+    transform: translate(-50%, -51%) scale(calc((var(--char-scale) + 0.06) * 0.92));
   }
 
   .control-dock {
@@ -1360,7 +1360,7 @@
   }
 
   .world__fire-anchor {
-    top: 61%;
+    top: 62%;
     transform: translate(-50%, -50%) scale(0.78);
   }
 
@@ -1369,7 +1369,7 @@
   }
 
   .world-characters__item.is-active {
-    transform: translate(-50%, -53%) scale(calc((var(--char-scale) + 0.06) * 0.82));
+    transform: translate(-50%, -51%) scale(calc((var(--char-scale) + 0.06) * 0.82));
   }
 
   .control-dock {

@@ -17,12 +17,12 @@ interface DhuniSceneProps {
 }
 
 const CHARACTER_POSITIONS = [
-  { x: 50, y: 52, scale: 0.86 },
-  { x: 60, y: 57, scale: 0.9 },
-  { x: 64, y: 66, scale: 0.98 },
-  { x: 50, y: 71, scale: 1.04 },
-  { x: 36, y: 66, scale: 0.98 },
-  { x: 40, y: 57, scale: 0.9 },
+  { x: 43, y: 60, scale: 0.9 },
+  { x: 57, y: 60, scale: 0.9 },
+  { x: 67, y: 66, scale: 0.97 },
+  { x: 60, y: 72, scale: 1.03 },
+  { x: 40, y: 72, scale: 1.03 },
+  { x: 33, y: 66, scale: 0.97 },
 ];
 
 export function DhuniScene({
