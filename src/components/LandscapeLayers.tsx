@@ -14,8 +14,8 @@ export function LandscapeLayers() {
         <span className="ridge ridge--d" />
         <span className="ridge ridge--e" />
         <span className="ridge ridge--f" />
-        <span className="tree-line tree-line--left" />
-        <span className="tree-line tree-line--right" />
+        <span className="grove grove--left" />
+        <span className="grove grove--right" />
       </div>
 
       <div className="landscape__cloudbank" aria-hidden="true">

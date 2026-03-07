@@ -64,7 +64,6 @@ Important fields:
 - `id`, `name`, `tagline`, `playlistId`
 - `season`, `mood`, `tradition`, `description`
 - `spriteType`, `environmentType`
-- `cameraShiftX`, `cameraShiftY`
 - `palette` (`sky`, `horizon`, `terrain`, `fog`, `ember`, `hud` tones)
 
 Current seasonal worlds:

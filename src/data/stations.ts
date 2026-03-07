@@ -31,8 +31,6 @@ export interface Station {
   description: string;
   spriteType: CharacterType;
   environmentType: 'still-air' | 'heat-haze' | 'rain-haze' | 'clear-evening';
-  cameraShiftX: number;
-  cameraShiftY: number;
   palette: StationPalette;
 }
 
@@ -49,8 +47,6 @@ export const stations: Station[] = [
     description: 'A shawled listener in still air before sunrise.',
     spriteType: 'winter-listener',
     environmentType: 'still-air',
-    cameraShiftX: -1.4,
-    cameraShiftY: -0.7,
     palette: {
       skyTop: '#0f1a2f',
       skyBottom: '#1f3150',
@@ -76,8 +72,6 @@ export const stations: Station[] = [
     description: 'A precise listener holding rhythm in dry warm light.',
     spriteType: 'summer-vidushi',
     environmentType: 'heat-haze',
-    cameraShiftX: 1.1,
-    cameraShiftY: -0.5,
     palette: {
       skyTop: '#1c2338',
       skyBottom: '#463338',
@@ -103,8 +97,6 @@ export const stations: Station[] = [
     description: 'A night writer with umbrella and soft laptop glow.',
     spriteType: 'monsoon-writer',
     environmentType: 'rain-haze',
-    cameraShiftX: -0.8,
-    cameraShiftY: -0.2,
     palette: {
       skyTop: '#122031',
       skyBottom: '#224356',
@@ -130,8 +122,6 @@ export const stations: Station[] = [
     description: 'An archivist with notes and headphones in calm twilight.',
     spriteType: 'sharad-archivist',
     environmentType: 'clear-evening',
-    cameraShiftX: 1.4,
-    cameraShiftY: -0.4,
     palette: {
       skyTop: '#181f31',
       skyBottom: '#35344d',

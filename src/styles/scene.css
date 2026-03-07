@@ -29,8 +29,7 @@
 .world__camera-plane {
   position: absolute;
   inset: -5%;
-  transform: translate(var(--camera-x), var(--camera-y)) scale(1.03);
-  transition: transform 900ms cubic-bezier(0.24, 0.86, 0.26, 1);
+  transform: scale(1.03);
 }
 
 .landscape__sky,
@@ -162,26 +161,36 @@
   clip-path: polygon(0 100%, 0 58%, 16% 63%, 32% 53%, 49% 58%, 68% 49%, 84% 55%, 100% 52%, 100% 100%);
 }
 
-.tree-line {
+.grove {
   position: absolute;
   bottom: 36%;
   width: 20%;
   height: 12%;
-  opacity: 0.55;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(20, 20, 24, 0.5) 0,
-    rgba(20, 20, 24, 0.5) 2px,
-    transparent 2px,
-    transparent 8px
+  opacity: 0.44;
+  background: radial-gradient(circle at 50% 65%, rgba(19, 20, 27, 0.56) 0%, rgba(19, 20, 27, 0.12) 70%);
+  clip-path: polygon(
+    0 100%,
+    0 60%,
+    8% 66%,
+    17% 52%,
+    25% 64%,
+    34% 49%,
+    43% 62%,
+    52% 47%,
+    61% 61%,
+    71% 50%,
+    80% 63%,
+    90% 52%,
+    100% 64%,
+    100% 100%
   );
 }
 
-.tree-line--left {
+.grove--left {
   left: 8%;
 }
 
-.tree-line--right {
+.grove--right {
   right: 8%;
 }
 
@@ -554,119 +563,234 @@
   --character-accent: #cab08f;
   position: relative;
   display: inline-block;
-  width: 34px;
-  height: 58px;
+  width: 40px;
+  height: 68px;
   image-rendering: pixelated;
   animation: character-idle 3.9s ease-in-out infinite;
 }
 
 .character-sprite__ground {
   position: absolute;
-  left: 7px;
+  left: 8px;
   bottom: 0;
-  width: 20px;
-  height: 7px;
+  width: 24px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(14, 12, 17, 0.48);
+  background: rgba(14, 12, 17, 0.5);
 }
 
 .character-sprite__legs {
   position: absolute;
+  left: 12px;
+  bottom: 9px;
+  width: 16px;
+  height: 10px;
+  background: rgba(30, 28, 36, 0.7);
+}
+
+.character-sprite__feet {
+  position: absolute;
   left: 10px;
-  bottom: 8px;
-  width: 14px;
-  height: 8px;
-  background: rgba(31, 29, 37, 0.66);
+  bottom: 6px;
+  width: 20px;
+  height: 4px;
+  background: rgba(19, 17, 24, 0.82);
 }
 
 .character-sprite__torso {
   position: absolute;
-  left: 8px;
-  bottom: 15px;
+  left: 11px;
+  bottom: 18px;
   width: 18px;
-  height: 23px;
-  background: color-mix(in srgb, var(--character-accent) 50%, #4d5362 50%);
+  height: 26px;
+  background: color-mix(in srgb, var(--character-accent) 52%, #4b5161 48%);
+}
+
+.character-sprite__drape {
+  position: absolute;
+  left: 8px;
+  bottom: 20px;
+  width: 22px;
+  height: 18px;
+  background: color-mix(in srgb, var(--character-accent) 38%, rgba(28, 34, 48, 0.62) 62%);
+  opacity: 0.55;
+  clip-path: polygon(0 0, 100% 0, 74% 100%, 0 100%);
 }
 
 .character-sprite__head {
   position: absolute;
-  left: 10px;
-  bottom: 38px;
+  left: 13px;
+  bottom: 43px;
   width: 14px;
-  height: 13px;
+  height: 14px;
   background: #d7b28e;
 }
 
 .character-sprite__hair {
   position: absolute;
-  left: 9px;
-  bottom: 45px;
+  left: 12px;
+  bottom: 52px;
   width: 16px;
   height: 6px;
-  background: rgba(34, 30, 33, 0.88);
+  background: rgba(32, 29, 34, 0.9);
+}
+
+.character-sprite__arm {
+  position: absolute;
+  width: 4px;
+  height: 11px;
+  background: #d2ae89;
+}
+
+.character-sprite__arm--left {
+  left: 8px;
+  bottom: 25px;
+}
+
+.character-sprite__arm--right {
+  left: 28px;
+  bottom: 25px;
 }
 
 .character-sprite__prop {
   position: absolute;
-  left: 24px;
-  bottom: 19px;
-  width: 9px;
-  height: 8px;
-  background: rgba(163, 178, 198, 0.66);
+  left: 30px;
+  bottom: 24px;
+  width: 8px;
+  height: 10px;
+  background: rgba(158, 174, 197, 0.7);
+}
+
+.character-sprite__detail {
+  position: absolute;
+  left: 16px;
+  bottom: 34px;
+  width: 7px;
+  height: 2px;
+  background: rgba(249, 227, 196, 0.55);
 }
 
 .character-sprite__highlight {
   position: absolute;
-  left: 8px;
-  bottom: 26px;
+  left: 10px;
+  bottom: 30px;
   width: 4px;
-  height: 8px;
-  background: rgba(255, 224, 188, 0.45);
+  height: 10px;
+  background: rgba(255, 227, 190, 0.42);
 }
 
 .character-sprite.is-active {
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--character-accent) 56%, #f5d6a9 44%));
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--character-accent) 58%, #f7d7aa 42%));
 }
 
 .character-sprite.is-winter-listener .character-sprite__torso {
-  background: color-mix(in srgb, #9caac2 54%, #4a5264 46%);
+  background: color-mix(in srgb, #97a6bf 54%, #495466 46%);
+}
+
+.character-sprite.is-winter-listener .character-sprite__drape {
+  opacity: 0.88;
+  background: color-mix(in srgb, #c0c9d8 52%, #697992 48%);
+  clip-path: polygon(0 0, 100% 0, 92% 42%, 75% 100%, 0 100%);
 }
 
 .character-sprite.is-winter-listener .character-sprite__prop {
-  width: 8px;
-  height: 8px;
-  background: rgba(173, 185, 206, 0.76);
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: rgba(201, 175, 136, 0.86);
+  left: 29px;
+  bottom: 22px;
+}
+
+.character-sprite.is-winter-listener .character-sprite__detail {
+  width: 6px;
+  height: 3px;
+  background: rgba(227, 217, 198, 0.62);
 }
 
 .character-sprite.is-summer-vidushi .character-sprite__torso {
-  background: color-mix(in srgb, #d69767 52%, #4d4c58 48%);
+  background: color-mix(in srgb, #d78e5d 56%, #5e4d52 44%);
+}
+
+.character-sprite.is-summer-vidushi .character-sprite__drape {
+  opacity: 0.9;
+  background: color-mix(in srgb, #f0ba7f 58%, #c1704e 42%);
+  clip-path: polygon(0 0, 86% 0, 100% 29%, 75% 100%, 8% 100%);
+}
+
+.character-sprite.is-summer-vidushi .character-sprite__arm--left {
+  height: 9px;
+  bottom: 27px;
 }
 
 .character-sprite.is-summer-vidushi .character-sprite__prop {
-  width: 10px;
-  height: 5px;
-  bottom: 21px;
-  background: rgba(229, 176, 118, 0.78);
+  width: 5px;
+  height: 15px;
+  left: 31px;
+  bottom: 20px;
+  background: rgba(220, 166, 110, 0.84);
+}
+
+.character-sprite.is-summer-vidushi .character-sprite__detail {
+  left: 18px;
+  width: 2px;
+  height: 2px;
+  background: rgba(250, 202, 142, 0.78);
 }
 
 .character-sprite.is-monsoon-writer .character-sprite__torso {
-  background: color-mix(in srgb, #87b9ca 52%, #45505f 48%);
+  background: color-mix(in srgb, #7daebf 52%, #445061 48%);
+}
+
+.character-sprite.is-monsoon-writer .character-sprite__drape {
+  opacity: 0.82;
+  background: color-mix(in srgb, #7aa2bb 56%, #496478 44%);
+}
+
+.character-sprite.is-monsoon-writer .character-sprite__hair {
+  width: 18px;
+  left: 11px;
 }
 
 .character-sprite.is-monsoon-writer .character-sprite__prop {
-  width: 11px;
+  width: 12px;
   height: 7px;
-  background: rgba(141, 198, 219, 0.84);
+  left: 27px;
+  bottom: 23px;
+  background: rgba(145, 201, 222, 0.86);
+}
+
+.character-sprite.is-monsoon-writer .character-sprite__detail {
+  width: 12px;
+  height: 3px;
+  left: 14px;
+  bottom: 58px;
+  background: rgba(108, 138, 166, 0.84);
 }
 
 .character-sprite.is-sharad-archivist .character-sprite__torso {
-  background: color-mix(in srgb, #b9a789 52%, #4f5060 48%);
+  background: color-mix(in srgb, #b8a178 54%, #50505f 46%);
+}
+
+.character-sprite.is-sharad-archivist .character-sprite__drape {
+  opacity: 0.7;
+  background: color-mix(in srgb, #d8c097 48%, #7a6b63 52%);
 }
 
 .character-sprite.is-sharad-archivist .character-sprite__prop {
   width: 8px;
-  height: 10px;
-  background: rgba(173, 169, 160, 0.8);
+  height: 12px;
+  left: 30px;
+  bottom: 21px;
+  background: rgba(179, 173, 163, 0.82);
+}
+
+.character-sprite.is-sharad-archivist .character-sprite__detail {
+  width: 11px;
+  height: 2px;
+  left: 12px;
+  bottom: 49px;
+  background: rgba(198, 194, 185, 0.76);
 }
 
 .landscape__weather {

@@ -55,8 +55,6 @@ export function DhuniScene({
     '--ember': currentStation.palette.ember,
     '--firelight': currentStation.palette.firelight,
     '--accent': currentStation.palette.accent,
-    '--camera-x': `${currentStation.cameraShiftX}%`,
-    '--camera-y': `${currentStation.cameraShiftY}%`,
     '--fire-energy': fireEnergy.toFixed(2),
   } as CSSProperties;
 
