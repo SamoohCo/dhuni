@@ -71,7 +71,7 @@ function App() {
 
       <footer className="world-credit">
         Handcrafted with love at{' '}
-        <a href="https://samooh.com" target="_blank" rel="noreferrer noopener">
+        <a href="https://samooh.com/?ref=dhuni.net" target="_blank" rel="noreferrer noopener">
           Samooh
         </a>
       </footer>
