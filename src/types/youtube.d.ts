@@ -9,6 +9,9 @@ declare namespace YT {
     loadPlaylist(options: PlaylistOptions): void;
     stopVideo(): void;
     setShuffle(shufflePlaylist: boolean): void;
+    nextVideo(): void;
+    getVideoData(): VideoData;
+    getIframe(): HTMLIFrameElement;
     playVideo(): void;
     pauseVideo(): void;
     mute(): void;
@@ -49,6 +52,12 @@ declare namespace YT {
 
   interface PlayerEvent {
     target: Player;
+  }
+
+  interface VideoData {
+    video_id: string;
+    title: string;
+    author: string;
   }
 
   interface OnStateChangeEvent extends PlayerEvent {

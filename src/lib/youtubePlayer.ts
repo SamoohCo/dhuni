@@ -91,6 +91,7 @@ export class YouTubePlaylistPlayer {
   private currentPlaylistId: string | null = null;
   private currentStartIndex = 0;
   private shuffleAttemptTimers: number[] = [];
+  private avoidVideoTimers: number[] = [];
 
   constructor(events: YouTubePlayerEvents = {}) {
     this.events = events;
@@ -119,6 +120,7 @@ export class YouTubePlaylistPlayer {
       },
       events: {
         onReady: () => {
+          this.hardenIframePlaybackSurface();
           this.events.onReady?.();
         },
         onStateChange: (event) => {
@@ -132,6 +134,7 @@ export class YouTubePlaylistPlayer {
     } as YT.PlayerOptions & { host: string };
 
     this.player = new YT.Player(hostElement, playerOptions);
+    this.hardenIframePlaybackSurface();
   }
 
   loadPlaylist(
@@ -158,6 +161,7 @@ export class YouTubePlaylistPlayer {
     this.currentStartIndex = startIndex;
     this.events.onStateChange?.('loading');
     this.clearShuffleTimers();
+    this.clearAvoidVideoTimers();
 
     try {
       this.player.stopVideo();
@@ -207,6 +211,75 @@ export class YouTubePlaylistPlayer {
     this.shuffleAttemptTimers = [];
   }
 
+  private hardenIframePlaybackSurface(): void {
+    let iframe: HTMLIFrameElement | null = null;
+    try {
+      iframe = this.player?.getIframe() ?? null;
+    } catch {
+      iframe = null;
+    }
+
+    if (!iframe) {
+      return;
+    }
+
+    iframe.setAttribute('disablepictureinpicture', 'true');
+    iframe.setAttribute('controlslist', 'nodownload noplaybackrate noremoteplayback');
+
+    const existingAllow = iframe.getAttribute('allow') ?? '';
+    const filteredAllow = existingAllow
+      .split(';')
+      .map((value) => value.trim())
+      .filter((value) => value.length > 0 && value !== 'picture-in-picture')
+      .join('; ');
+
+    iframe.setAttribute(
+      'allow',
+      filteredAllow.length > 0 ? filteredAllow : 'autoplay; encrypted-media',
+    );
+  }
+
+  getCurrentVideoId(): string | null {
+    try {
+      const videoId = this.player?.getVideoData().video_id;
+      return videoId && videoId.length > 0 ? videoId : null;
+    } catch {
+      return null;
+    }
+  }
+
+  avoidVideo(videoId: string | null): void {
+    if (!this.player || !videoId) {
+      return;
+    }
+
+    this.clearAvoidVideoTimers();
+
+    // Retry for a short window because the first item may settle after buffering.
+    [220, 900, 1800].forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        if (this.getCurrentVideoId() !== videoId) {
+          return;
+        }
+
+        try {
+          this.player?.nextVideo();
+        } catch {
+          // Ignore temporary player state issues.
+        }
+      }, delay);
+
+      this.avoidVideoTimers.push(timerId);
+    });
+  }
+
+  private clearAvoidVideoTimers(): void {
+    this.avoidVideoTimers.forEach((timerId) => {
+      window.clearTimeout(timerId);
+    });
+    this.avoidVideoTimers = [];
+  }
+
   play(): void {
     this.player?.playVideo();
   }
@@ -233,6 +306,7 @@ export class YouTubePlaylistPlayer {
 
   destroy(): void {
     this.clearShuffleTimers();
+    this.clearAvoidVideoTimers();
     this.player?.destroy();
     this.player = null;
   }

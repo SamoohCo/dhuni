@@ -74,6 +74,10 @@ If you want to update stations quickly, collect this per season:
 - recommended: `name` and `tagline`
 - optional: `mood`, `tradition`, `description`
 
+Playback behavior:
+- Dhuni enables playlist shuffle on station load.
+- Dhuni keeps same-session memory per station and attempts to skip if a station immediately lands on the exact same video when you return.
+
 Current seasonal worlds:
 - Vasanta
 - Grishma
@@ -114,6 +118,7 @@ Dhuni uses Media Session API where supported for:
 Web limitation:
 - browsers do not reliably expose OS hardware volume key interception to web apps.
 - use in-app volume slider and ArrowUp/ArrowDown.
+- some browsers may still force Picture-in-Picture behavior for backgrounded media; Dhuni applies best-effort iframe flags to reduce this, but full suppression is not guaranteed in every browser setting.
 
 ## Autoplay behavior
 

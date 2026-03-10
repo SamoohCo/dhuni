@@ -93,6 +93,7 @@ export function useRadioState() {
   const playerRef = useRef<YouTubePlaylistPlayer | null>(null);
   const switchTimerRef = useRef<number | null>(null);
   const playProbeTimerRef = useRef<number | null>(null);
+  const lastPlayedVideoByStationRef = useRef<Record<string, string>>({});
 
   const stationIndexRef = useRef(stationIndex);
   const isPoweredRef = useRef(isPowered);
@@ -127,6 +128,15 @@ export function useRadioState() {
 
   const currentStation = stations[stationIndex];
 
+  const rememberCurrentVideo = useCallback(() => {
+    const videoId = playerRef.current?.getCurrentVideoId();
+    if (!videoId) {
+      return;
+    }
+
+    lastPlayedVideoByStationRef.current[currentStationRef.current.id] = videoId;
+  }, []);
+
   const clearPlayProbe = useCallback(() => {
     if (playProbeTimerRef.current !== null) {
       window.clearTimeout(playProbeTimerRef.current);
@@ -150,6 +160,9 @@ export function useRadioState() {
   const selectStation = useCallback(
     (nextIndex: number) => {
       const bounded = wrapStationIndex(nextIndex);
+      if (bounded !== stationIndexRef.current) {
+        rememberCurrentVideo();
+      }
 
       setStationIndex((previous) => {
         if (previous !== bounded) {
@@ -161,7 +174,7 @@ export function useRadioState() {
 
       setError(null);
     },
-    [pulseSwitching],
+    [pulseSwitching, rememberCurrentVideo],
   );
 
   const activateStation = useCallback(
@@ -249,6 +262,7 @@ export function useRadioState() {
           setError(null);
           setIsPlaying(true);
           setIsConnecting(false);
+          rememberCurrentVideo();
           clearPlayProbe();
           break;
         case 'paused':
@@ -267,7 +281,7 @@ export function useRadioState() {
           break;
       }
     },
-    [clearPlayProbe],
+    [clearPlayProbe, rememberCurrentVideo],
   );
 
   useEffect(() => {
@@ -305,6 +319,7 @@ export function useRadioState() {
           force: true,
           shuffle: true,
         });
+        player.avoidVideo(lastPlayedVideoByStationRef.current[currentStationRef.current.id] ?? null);
         player.setVolume(volumeRef.current);
 
         if (isMutedRef.current || volumeRef.current === 0) {
@@ -344,6 +359,7 @@ export function useRadioState() {
       force: true,
       shuffle: true,
     });
+    playerRef.current.avoidVideo(lastPlayedVideoByStationRef.current[currentStation.id] ?? null);
 
     if (isPoweredRef.current) {
       setIsConnecting(true);
