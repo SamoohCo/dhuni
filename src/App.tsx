@@ -1,12 +1,40 @@
-import { useMemo, type CSSProperties } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { ControlDock } from './components/ControlDock';
 import { DhuniScene } from './components/DhuniScene';
 import { TopHud } from './components/TopHud';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useRadioState } from './hooks/useRadioState';
 
+const INFO_DISMISSED_KEY = 'dhuni.info.dismissed.v1';
+
+function hasDismissedInfo(): boolean {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  try {
+    return window.localStorage.getItem(INFO_DISMISSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function persistInfoDismissed(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(INFO_DISMISSED_KEY, '1');
+  } catch {
+    // Ignore storage errors and keep UX flowing.
+  }
+}
+
 function App() {
   const radio = useRadioState();
+  const [hasSeenInfo, setHasSeenInfo] = useState(() => hasDismissedInfo());
+  const [showInfo, setShowInfo] = useState(() => !hasDismissedInfo());
 
   const keyboardActions = useMemo(
     () => ({
@@ -42,6 +70,19 @@ function App() {
     [radio.currentStation.palette.accent, radio.currentStation.palette.hudGlass],
   );
 
+  const closeInfo = () => {
+    setShowInfo(false);
+    if (!hasSeenInfo) {
+      persistInfoDismissed();
+      setHasSeenInfo(true);
+    }
+  };
+
+  const startFromInfo = () => {
+    radio.startListening();
+    closeInfo();
+  };
+
   return (
     <main className="app" aria-label="Dhuni ambient world" style={appStyle}>
       <DhuniScene
@@ -57,6 +98,42 @@ function App() {
       />
 
       <TopHud station={radio.currentStation} statusText={radio.statusText} />
+
+      <button
+        type="button"
+        className="world-info-toggle"
+        onClick={() => setShowInfo((value) => !value)}
+        aria-label={showInfo ? 'Hide Dhuni information' : 'Show Dhuni information'}
+        aria-pressed={showInfo}
+      >
+        ℹ
+      </button>
+
+      {showInfo ? (
+        <section className="world-info-panel" role="dialog" aria-label="About Dhuni">
+          <p className="world-info-panel__title">About Dhuni</p>
+          <p className="world-info-panel__body">
+            Six ritus, six moods, one sacred fire:
+            <br />
+            Vasanta, Grishma, Varsha, Sharad, Hemanta, Shishira.
+          </p>
+          <p className="world-info-panel__shortcuts">
+            Space play/pause • ←/→ station • ↑/↓ volume • M mute • Home/End jump
+          </p>
+          <div className="world-info-panel__actions">
+            <button type="button" className="world-info-panel__button" onClick={closeInfo}>
+              Close
+            </button>
+            <button
+              type="button"
+              className="world-info-panel__button world-info-panel__button--primary"
+              onClick={startFromInfo}
+            >
+              Start Listening
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <ControlDock
         isPowered={radio.isPowered}

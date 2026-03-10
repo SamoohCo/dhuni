@@ -81,11 +81,11 @@ export function useRadioState() {
   const [stationIndex, setStationIndex] = useState(initialStationIndex);
   const [volume, setVolume] = useState(clampVolume(initialPreferences.volume));
   const [isMuted, setIsMuted] = useState(initialPreferences.muted);
-  const [isPowered, setIsPowered] = useState(false);
+  const [isPowered, setIsPowered] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(true);
   const [isReady, setIsReady] = useState(false);
-  const [hasPlaybackIntent, setHasPlaybackIntent] = useState(false);
+  const [hasPlaybackIntent, setHasPlaybackIntent] = useState(true);
   const [isStationSwitching, setIsStationSwitching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -228,6 +228,13 @@ export function useRadioState() {
       }
       return next;
     });
+  }, []);
+
+  const startListening = useCallback(() => {
+    setError(null);
+    setHasPlaybackIntent(true);
+    setIsPowered(true);
+    setIsConnecting(true);
   }, []);
 
   const handlePlaybackStateChange = useCallback(
@@ -460,6 +467,7 @@ export function useRadioState() {
     firstStation,
     lastStation,
     togglePower,
+    startListening,
     setVolumeLevel,
     volumeUp,
     volumeDown,

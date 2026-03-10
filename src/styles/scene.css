@@ -931,6 +931,79 @@
   color: rgba(215, 209, 196, 0.76);
 }
 
+.world-info-toggle {
+  position: absolute;
+  z-index: 23;
+  right: clamp(0.7rem, 2.1vw, 1.4rem);
+  top: clamp(0.7rem, 2.1vh, 1.45rem);
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(219, 206, 184, 0.28);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--hud-glass) 92%, transparent 8%), transparent);
+  color: rgba(238, 230, 214, 0.86);
+  font-family: var(--ui-serif);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.world-info-panel {
+  position: absolute;
+  z-index: 22;
+  right: clamp(0.7rem, 2.1vw, 1.4rem);
+  top: clamp(3rem, 8vh, 4.8rem);
+  width: min(88vw, 390px);
+  border-radius: 14px;
+  padding: 0.66rem 0.72rem;
+  border: 1px solid rgba(224, 209, 182, 0.17);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--hud-glass) 90%, transparent 10%), transparent);
+  backdrop-filter: blur(11px);
+  color: rgba(235, 228, 214, 0.9);
+}
+
+.world-info-panel__title {
+  margin: 0;
+  font-family: var(--ui-serif);
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.world-info-panel__body,
+.world-info-panel__shortcuts {
+  margin: 0.42rem 0 0;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: rgba(223, 214, 198, 0.82);
+}
+
+.world-info-panel__actions {
+  margin-top: 0.58rem;
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.world-info-panel__button {
+  border: 1px solid rgba(219, 206, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(20, 19, 25, 0.52);
+  color: color-mix(in srgb, var(--hud-accent) 58%, #f5ebda 42%);
+  min-width: 72px;
+  height: 30px;
+  padding: 0 0.66rem;
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.world-info-panel__button--primary {
+  border-color: rgba(231, 190, 136, 0.42);
+}
+
 .control-dock {
   position: absolute;
   z-index: 20;
@@ -1008,7 +1081,9 @@
 }
 
 .dock-button:focus-visible,
-.dock-volume input:focus-visible {
+.dock-volume input:focus-visible,
+.world-info-toggle:focus-visible,
+.world-info-panel__button:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
@@ -1345,6 +1420,10 @@
   .world-credit {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 0.24rem);
   }
+
+  .world-info-panel {
+    width: min(90vw, 360px);
+  }
 }
 
 @media (max-width: 680px) {
@@ -1357,6 +1436,20 @@
   .top-hud__tagline,
   .top-hud__state {
     display: none;
+  }
+
+  .world-info-toggle {
+    width: 28px;
+    height: 28px;
+    right: 0.45rem;
+    top: 0.72rem;
+  }
+
+  .world-info-panel {
+    top: 2.85rem;
+    right: 0.45rem;
+    width: min(92vw, 330px);
+    padding: 0.58rem 0.62rem;
   }
 
   .world__fire-anchor {

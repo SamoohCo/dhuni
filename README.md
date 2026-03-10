@@ -126,9 +126,9 @@ Dhuni handles this with:
 ## Tracking surface
 
 - GA4 (`gtag`) is loaded from `index.html` for analytics.
-- YouTube requests are now deferred until an explicit playback action (play/power/activate station).
-- Dhuni uses `youtube-nocookie.com` for embed host, which can reduce cookie use before interaction.
-- Once playback starts, YouTube may still call Google/DoubleClick endpoints for video delivery and ads. That behavior is controlled by YouTube.
+- Dhuni attempts autoplay on initial load, so YouTube requests can begin on first paint.
+- Dhuni uses `youtube-nocookie.com` for embed host, which can reduce cookie use in some cases.
+- YouTube may still call Google/DoubleClick endpoints for video delivery and ads. That behavior is controlled by YouTube.
 
 ## SEO + social assets
 
