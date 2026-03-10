@@ -63,14 +63,14 @@ Each station maps to:
 
 Important fields:
 - `id`, `name`, `tagline`, `playlistId`
-- optional: `startIndex` (helps avoid similar opening tracks across stations)
+- optional: `startIndex` (legacy override, usually not needed)
 - `season`, `mood`, `tradition`, `description`
 - `spriteType`, `environmentType`
 - `palette` (`sky`, `horizon`, `terrain`, `fog`, `ember`, `hud` tones)
 
 If you want to update stations quickly, collect this per season:
 - required: `playlistId` (YouTube playlist ID only, not full URL)
-- optional: `startIndex` (0-based index into the playlist for station entry point)
+- optional: `startIndex` (0-based station entry override; shuffle is enabled by default)
 - recommended: `name` and `tagline`
 - optional: `mood`, `tradition`, `description`
 

@@ -8,6 +8,7 @@ declare namespace YT {
     constructor(elementId: string | HTMLElement, options: PlayerOptions);
     loadPlaylist(options: PlaylistOptions): void;
     stopVideo(): void;
+    setShuffle(shufflePlaylist: boolean): void;
     playVideo(): void;
     pauseVideo(): void;
     mute(): void;

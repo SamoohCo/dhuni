@@ -302,8 +302,8 @@ export function useRadioState() {
         }
 
         player.loadPlaylist(currentStationRef.current.playlistId, {
-          startIndex: currentStationRef.current.startIndex ?? 0,
           force: true,
+          shuffle: true,
         });
         player.setVolume(volumeRef.current);
 
@@ -341,8 +341,8 @@ export function useRadioState() {
     }
 
     playerRef.current.loadPlaylist(currentStation.playlistId, {
-      startIndex: currentStation.startIndex ?? 0,
       force: true,
+      shuffle: true,
     });
 
     if (isPoweredRef.current) {
@@ -360,7 +360,7 @@ export function useRadioState() {
         'Playback needs a direct user interaction. Tap play once more to retry.',
       );
     }
-  }, [currentStation.playlistId, currentStation.startIndex, isReady]);
+  }, [currentStation.playlistId, isReady]);
 
   useEffect(() => {
     if (!isReady || !playerRef.current) {

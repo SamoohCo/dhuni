@@ -90,6 +90,7 @@ export class YouTubePlaylistPlayer {
 
   private currentPlaylistId: string | null = null;
   private currentStartIndex = 0;
+  private shuffleAttemptTimers: number[] = [];
 
   constructor(events: YouTubePlayerEvents = {}) {
     this.events = events;
@@ -135,7 +136,7 @@ export class YouTubePlaylistPlayer {
 
   loadPlaylist(
     playlistId: string,
-    options: { startIndex?: number; force?: boolean } = {},
+    options: { startIndex?: number; force?: boolean; shuffle?: boolean } = {},
   ): void {
     if (!this.player) {
       return;
@@ -143,6 +144,7 @@ export class YouTubePlaylistPlayer {
 
     const startIndex = Math.max(0, Math.floor(options.startIndex ?? 0));
     const force = options.force ?? false;
+    const shuffle = options.shuffle ?? true;
 
     if (
       !force &&
@@ -155,6 +157,7 @@ export class YouTubePlaylistPlayer {
     this.currentPlaylistId = playlistId;
     this.currentStartIndex = startIndex;
     this.events.onStateChange?.('loading');
+    this.clearShuffleTimers();
 
     try {
       this.player.stopVideo();
@@ -169,6 +172,39 @@ export class YouTubePlaylistPlayer {
       startSeconds: 0,
       suggestedQuality: 'small',
     });
+
+    if (shuffle) {
+      this.scheduleShuffle();
+    }
+  }
+
+  private scheduleShuffle(): void {
+    if (!this.player) {
+      return;
+    }
+
+    // YouTube may ignore setShuffle if called too early, so we retry briefly.
+    const attempt = () => {
+      try {
+        this.player?.setShuffle(true);
+      } catch {
+        // Ignore transient API readiness errors.
+      }
+    };
+
+    [140, 650, 1500].forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        attempt();
+      }, delay);
+      this.shuffleAttemptTimers.push(timerId);
+    });
+  }
+
+  private clearShuffleTimers(): void {
+    this.shuffleAttemptTimers.forEach((timerId) => {
+      window.clearTimeout(timerId);
+    });
+    this.shuffleAttemptTimers = [];
   }
 
   play(): void {
@@ -196,6 +232,7 @@ export class YouTubePlaylistPlayer {
   }
 
   destroy(): void {
+    this.clearShuffleTimers();
     this.player?.destroy();
     this.player = null;
   }
