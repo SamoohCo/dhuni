@@ -102,7 +102,8 @@ export class YouTubePlaylistPlayer {
       return;
     }
 
-    this.player = new YT.Player(hostElement, {
+    const playerOptions = {
+      host: 'https://www.youtube-nocookie.com',
       height: '1',
       width: '1',
       playerVars: {
@@ -127,7 +128,9 @@ export class YouTubePlaylistPlayer {
           this.events.onError?.(mapError(event.data));
         },
       },
-    });
+    } as YT.PlayerOptions & { host: string };
+
+    this.player = new YT.Player(hostElement, playerOptions);
   }
 
   loadPlaylist(

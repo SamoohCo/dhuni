@@ -85,6 +85,7 @@ export function useRadioState() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [hasPlaybackIntent, setHasPlaybackIntent] = useState(false);
   const [isStationSwitching, setIsStationSwitching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -166,6 +167,7 @@ export function useRadioState() {
   const activateStation = useCallback(
     (nextIndex: number) => {
       selectStation(nextIndex);
+      setHasPlaybackIntent(true);
       setIsPowered(true);
     },
     [selectStation],
@@ -218,6 +220,9 @@ export function useRadioState() {
     setIsPowered((previous) => {
       const next = !previous;
       setIsConnecting(next);
+      if (next) {
+        setHasPlaybackIntent(true);
+      }
       if (!next) {
         setIsPlaying(false);
       }
@@ -259,6 +264,10 @@ export function useRadioState() {
   );
 
   useEffect(() => {
+    if (!hasPlaybackIntent) {
+      return;
+    }
+
     const host = playerHostRef.current;
     if (!host) {
       return;
@@ -317,7 +326,7 @@ export function useRadioState() {
       player.destroy();
       playerRef.current = null;
     };
-  }, [clearPlayProbe, handlePlaybackStateChange]);
+  }, [clearPlayProbe, handlePlaybackStateChange, hasPlaybackIntent]);
 
   useEffect(() => {
     if (!isReady || !playerRef.current) {
@@ -344,7 +353,7 @@ export function useRadioState() {
         'Playback needs a direct user interaction. Tap play once more to retry.',
       );
     }
-  }, [currentStation.playlistId, isReady]);
+  }, [currentStation.playlistId, currentStation.startIndex, isReady]);
 
   useEffect(() => {
     if (!isReady || !playerRef.current) {
@@ -399,7 +408,10 @@ export function useRadioState() {
 
   useEffect(() => {
     registerMediaSessionActions({
-      onPlay: () => setIsPowered(true),
+      onPlay: () => {
+        setHasPlaybackIntent(true);
+        setIsPowered(true);
+      },
       onPause: () => setIsPowered(false),
       onNext: nextStation,
       onPrevious: previousStation,

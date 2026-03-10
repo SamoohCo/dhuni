@@ -123,12 +123,18 @@ Dhuni handles this with:
 - interaction-led playback attempts
 - graceful retry/error state when blocked
 
+## Tracking surface
+
+- GA4 (`gtag`) is loaded from `index.html` for analytics.
+- YouTube requests are now deferred until an explicit playback action (play/power/activate station).
+- Dhuni uses `youtube-nocookie.com` for embed host, which can reduce cookie use before interaction.
+- Once playback starts, YouTube may still call Google/DoubleClick endpoints for video delivery and ads. That behavior is controlled by YouTube.
+
 ## SEO + social assets
 
 - Metadata and schema live in `index.html`.
 - Social/brand assets live in `public/`:
   - `og-image.png` (1200x630)
-  - `favicon.svg`
   - `favicon-32.png`
   - `apple-touch-icon.png`
 - To regenerate PNG assets:
