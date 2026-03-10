@@ -7,6 +7,7 @@ declare namespace YT {
   class Player {
     constructor(elementId: string | HTMLElement, options: PlayerOptions);
     loadPlaylist(options: PlaylistOptions): void;
+    stopVideo(): void;
     playVideo(): void;
     pauseVideo(): void;
     mute(): void;
